@@ -124,7 +124,7 @@ else{
 		}
 ?>
 	<p class="doc">
-		<a href="document.php?id=<?php print $doc['id'] ?>"><?php echo truncateString(stripslashes($ab), 140) ?></a>
+		<a href="document.php?id=<?php print $doc['id'] ?>"><?php echo truncateString(stripslashes($ab), 120) ?></a>
 	</p>
 <?php
 	}
