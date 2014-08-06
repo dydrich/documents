@@ -64,9 +64,23 @@ else if ($_GET['doc'] == "classbook") {
 	}
 }
 else if ($_GET['doc'] == "teacherbook") {
+	/*
+	 * gestione supplenti
+	 */
+	$isSuppplyTeacher = false;
+	$rb = RBUtilities::getInstance($db);
+	if ($_SESSION['__user__']->isSupplyTeacher()) {
+		$tit = $_SESSION['__user__']->getLecturer();
+		$user = $rb->loadUserFromUid($tit, 'school');
+		$isSuppplyTeacher = true;
+	}
+	else {
+		$user = $_SESSION['__user__'];
+	}
+
 	$file = $_GET['f'];
 	$f = explode("_", $file);
-	$document = new RecordGradesDocument($file.".pdf", $_SESSION['__current_year__'], $f[3], $_SESSION['__user__'], new MySQLDataLoader($db));
+	$document = new RecordGradesDocument($file.".pdf", $_SESSION['__current_year__'], $f[3], $user, new MySQLDataLoader($db));
 	try{
 		$document->download();
 	} catch (MYSQLException $ex){
@@ -75,19 +89,33 @@ else if ($_GET['doc'] == "teacherbook") {
 	}
 }
 else if ($_GET['doc'] == "teacherbookall") {
+	/*
+	 * gestione supplenti
+	 */
+	$isSuppplyTeacher = false;
+	$rb = RBUtilities::getInstance($db);
+	if ($_SESSION['__user__']->isSupplyTeacher()) {
+		$tit = $_SESSION['__user__']->getLecturer();
+		$user = $rb->loadUserFromUid($tit, 'school');
+		$isSuppplyTeacher = true;
+	}
+	else {
+		$user = $_SESSION['__user__'];
+	}
+
 	$file = $_GET['f'];
 	$f = explode("_", $file);
 	$support = false;
 	if (isset($_GET['support']) && $_GET['support'] == 1){
 		$support = true;
 	}
-	$document = new RecordGradesDocument($file.".pdf", $_SESSION['__current_year__'], $f[3], $_SESSION['__user__'], new MySQLDataLoader($db));
+	$document = new RecordGradesDocument($file.".pdf", $_SESSION['__current_year__'], $f[3], $user, new MySQLDataLoader($db));
 	$document->setHasAttach(true);
 	if (!$support){
-		$id = $db->executeCount("SELECT id FROM rb_registri_personali WHERE anno = {$_SESSION['__current_year__']->get_ID()} AND docente = {$_SESSION['__user__']->getUid()} AND classe = {$f[3]} AND materia = {$f[4]}");
+		$id = $db->executeCount("SELECT id FROM rb_registri_personali WHERE anno = {$_SESSION['__current_year__']->get_ID()} AND docente = {$_SESSION['__user__']->getUid(true)} AND classe = {$f[3]} AND materia = {$f[4]}");
 	}
 	else {
-		$id = $db->executeCount("SELECT id FROM rb_registri_personali WHERE anno = {$_SESSION['__current_year__']->get_ID()} AND docente = {$_SESSION['__user__']->getUid()} AND classe = {$f[3]} AND alunno = {$f[4]}");
+		$id = $db->executeCount("SELECT id FROM rb_registri_personali WHERE anno = {$_SESSION['__current_year__']->get_ID()} AND docente = {$_SESSION['__user__']->getUid(true)} AND classe = {$f[3]} AND alunno = {$f[4]}");
 	}
 	$document->setID($id);
 	try{
@@ -104,7 +132,22 @@ else if ($_GET['doc'] == "teacherbook_att"){
 	$file = $_GET['f'];
 	$cls = $_GET['cls'];
 	$sub = $_GET['sub'];
-	$document = new RecordGradesAttach($file, $_SESSION['__current_year__'], $cls, $_SESSION['__user__'], $sub);
+
+	/*
+	 * gestione supplenti
+	 */
+	$isSuppplyTeacher = false;
+	$rb = RBUtilities::getInstance($db);
+	if ($_SESSION['__user__']->isSupplyTeacher()) {
+		$tit = $_SESSION['__user__']->getLecturer();
+		$user = $rb->loadUserFromUid($tit, 'school');
+		$isSuppplyTeacher = true;
+	}
+	else {
+		$user = $_SESSION['__user__'];
+	}
+
+	$document = new RecordGradesAttach($file, $_SESSION['__current_year__'], $cls, $user, $sub);
 	try{
 		$document->download();
 	} catch (MYSQLException $ex){
