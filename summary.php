@@ -32,5 +32,3 @@ while ($row = $res_docs->fetch_assoc()){
 //print_r($anni);
 
 include "summary.html.php";
-
-?>

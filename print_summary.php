@@ -61,7 +61,7 @@ class MYPDF extends SchoolPDF {
 		$this->SetTextColor(0);
 		$this->Cell(180, 4, $_SESSION['__current_year__']->to_string()."  - Riepilogo albo pretorio del mese di {$mesi[intval($month)]} {$year}", 0, 0, "C");
 		$this->setCellPaddings(0, 0, 0, 3);
-		$this->SetLineStyle(array('width' => $line_width, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(128, 128, 128)));
+		$this->SetLineStyle(array('width' => .1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(128, 128, 128)));
 		$this->SetTextColor(0);
 	}
 

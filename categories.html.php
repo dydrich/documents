@@ -3,9 +3,10 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title><?php print $_SESSION['__config__']['intestazione_scuola'] ?>::categorie albo</title>
-<link rel="stylesheet" href="../../intranet/teachers/reg.css" type="text/css" media="screen,projection" />
+<link rel="stylesheet" href="../../css/reg.css" type="text/css" media="screen,projection" />
+<link rel="stylesheet" href="../../css/general.css" type="text/css" media="screen,projection" />
 <link rel="stylesheet" href="theme/style.css" type="text/css" media="screen,projection" />
-<link rel="stylesheet" href="theme/jquery-ui-1.10.3.custom.min.css" type="text/css" media="screen,projection" />
+<link rel="stylesheet" href="../../css/jquery/jquery-ui.min.css" type="text/css" media="screen,projection" />
 <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="../../js/jquery-ui-1.10.3.custom.min.js"></script>
 <script type="text/javascript">
@@ -64,7 +65,7 @@ var del_cat = function(id_cat, action, row){
 <?php include "menu.php" ?>
 </div>
 <div id="left_col">
-	<div class="page_title">
+	<div class="group_head">
 		Gestione categorie di documento: albo pretorio
 	</div>
 	<div class="list_header">
@@ -82,7 +83,7 @@ var del_cat = function(id_cat, action, row){
  	    ?>
  	    	<tr id="tr<?php print $row ?>">
  	    		<td id="row<?php print $row ?>_1" class="ctit1"><?php print utf8_decode($cat['codice']) ?></td>
- 	    		<td id="row<?php print $row ?>_2" class="ctit2"><a href="category.php?id=<?php echo $cat[id_categoria]?>&action=3" style="text-decoration: none"><?php echo utf8_decode($cat['nome']) ?></a></td>
+ 	    		<td id="row<?php print $row ?>_2" class="ctit2"><a href="category.php?id=<?php echo $cat['id_categoria']?>&action=3" style="text-decoration: none"><?php echo utf8_decode($cat['nome']) ?></a></td>
  	    		<td id="row<?php print $row ?>_3" class="ctit3"><?php print utf8_decode($cat['descrizione']) ?></td>
  	    		<td class="ctit4"><a href="#" class="del_x" onclick="del_cat(<?php echo $cat['id_categoria'] ?>, 2, <?php echo $row ?>)">x</a></td>
  	    	</tr>
