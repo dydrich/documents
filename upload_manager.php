@@ -6,13 +6,6 @@ require_once "../../lib/MimeType.php";
 
 check_session();
 
-if(isset($_REQUEST['area']) && $_REQUEST['area'] == "admin"){
-	$main = "#FFFFFF";
-}
-else{
-	$main = "#F3F3F6";
-}
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -26,7 +19,7 @@ else{
 <script type="text/javascript" src="../../js/jquery-ui-1.10.3.custom.min.js"></script>
 <script type="text/javascript"></script>
 </head>
-<body style="background-color: <?php echo $main ?>">
+<body style="background-color: #FAFAFA">
 <form action="upload_manager.php?action=upload&upl_type=<?php echo $_REQUEST['upl_type'] ?>&tipo=<?php echo $_GET['tipo'] ?>" method="post" enctype="multipart/form-data" id="doc_form">
 <div style="height: 25px; display: block" id="_div">
 <?php if ($_REQUEST['upl_type'] == "document" && isset($_REQUEST['action'])){ ?>

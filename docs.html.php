@@ -30,11 +30,13 @@ $(function(){
 		Gestione <?php echo strtolower($doc_type) ?>
 	</div>
 	<div class="list_header">
-		<div class="list_title" id="tit1"><span style="padding-left: 10px">Titolo</span></div>
-		<div class="list_title" id="tit2"><?php if ($_REQUEST['tipo'] == 4): ?>Tipo documento<?php elseif ($_REQUEST['tipo'] == 7): ?>Progressivo<?php else : ?>Data upload<?php endif; ?></div>
-		<div class="list_title list_f" id="tit">Tipo file</div>
-		<div class="list_title list_f" >AS</div>
-		<div class="list_title list_f" >DW</div>
+		<div style="width: 95%; margin: auto; position: relative; padding-top: 7px">
+			<div class="list_title" id="tit1"><span style="padding-left: 10px">Titolo</span></div>
+			<div class="list_title" id="tit2"><?php if ($_REQUEST['tipo'] == 4): ?>Tipo documento<?php elseif ($_REQUEST['tipo'] == 7): ?>Progressivo<?php else : ?>Data upload<?php endif; ?></div>
+			<div class="list_title list_f" id="tit">Tipo file</div>
+			<div class="list_title list_f" >AS</div>
+			<div class="list_title list_f" >DW</div>
+		</div>
 	</div>
 	<table class="list">
         <?php 
