@@ -217,14 +217,13 @@ class Document{
 	public function downloadFile(){
 		$mime = MimeType::getMimeContentType($this->file);
 	
-		$fp = fopen("../../".$this->getFilePath().$this->file, "r");
+		$fp = "../../".$this->getFilePath().$this->file;
 		header("Content-Type: ".$mime['ctype']);
 		header("Content-Disposition: attachment; filename=".$this->file);
 		header("Expires: 0");
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Pragma: public");
-		fpassthru($fp);
-		@fclose($fp);
+		readfile($fp);
 		//exit;
 	}
 	
