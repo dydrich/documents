@@ -13,6 +13,6 @@ $sel_ev_docs = "SELECT rb_documents.id, file, doc_type, abstract, titolo, link, 
 //echo $sel_ev_docs;
 $res_ev = $db->execute($sel_ev_docs);
 
-$navigation_label = "Registro elettronico - Documenti didattici condivisi";
+$drawer_label = "Documenti didattici condivisi";
 
 include "shared_docs.html.php";

@@ -25,7 +25,7 @@ else {
 
 $sel_type = "SELECT commento FROM rb_document_types WHERE id = ".$_REQUEST['tipo'];
 $doc_type = $db->executeCount($sel_type);
-$navigation_label = "Area documenti - {$doc_type}";
+$drawer_label = "Gestione ". strtolower($doc_type);
 
 if(!isset($_REQUEST['second'])){
 	$res_docs = $db->execute($sel_docs);
@@ -55,10 +55,6 @@ if($pagine < 1) {
 $colspan = 5;
 $link = basename($_SERVER['PHP_SELF']);
 $count_name = "count_docs";
-$row_class = "docs_row";
-$row_class_menu = " docs_row_menu";
 $nav_params = "&tipo={$_REQUEST['tipo']}";
 
 include "docs.html.php";
-
-?>

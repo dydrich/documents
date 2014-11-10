@@ -48,7 +48,7 @@ else{
 	$tipo = $_REQUEST['tipo'];
 }
 
-$navigation_label = "Registro elettronico - area documenti";
+$drawer_label = "Gestione documento";
 
 // anni scolastici
 $sel_anni = "SELECT id_anno, descrizione FROM rb_anni WHERE id_anno <= ".$_SESSION['__current_year__']->get_ID()." ORDER BY id_anno DESC";

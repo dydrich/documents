@@ -19,8 +19,6 @@ $res_docs = $db->execute($sel_docs);
 $sel_type = "SELECT commento FROM rb_document_types WHERE id = ".$_REQUEST['tipo'];
 $res_type = $db->execute($sel_type);
 $doc_type = $res_type->fetch_assoc();
-$navigation_label = "Area documenti - {$doc_type['commento']}";
+$drawer_label = $doc_type['commento'];
 
 include "documents.html.php";
-
-?>

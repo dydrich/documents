@@ -1,4 +1,3 @@
-<div class="group_head">Gestione documento</div>
 <form action="document_manager.php" method="post" enctype="multipart/form-data" id="doc_form">
     <fieldset class="doc_fieldset">
     <legend>Dati file</legend>
@@ -53,7 +52,7 @@
             	<input type="text" name="tag" id="tag" class="almostfull_field" /><a href="#" id="add_tag" style="margin-left: 20px; margin-bottom: 8px" onclick="addTag(event)">Aggiungi</a>
             	<div id="tags_ct">
             	<?php 
-            	if ($tags){
+            	if (isset($tags)){
 					reset($tags);
 					$i = 0;
 					foreach ($tags as $t){

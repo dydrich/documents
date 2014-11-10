@@ -44,10 +44,8 @@ if ($doc instanceof DidacticDocument && $doc->getSchoolOrder() != 4){
 
 $sel_type = "SELECT commento FROM rb_document_types WHERE id = {$mydoc['doc_type']}";
 $doc_type = $db->executeCount($sel_type);
-$navigation_label = "Area documenti - {$doc_type}";
+$drawer_label = "Dettaglio documento";
 
 $_SESSION['no_file'] = array("referer" => "modules/documents/document.php?id={$_REQUEST['id']}", "path" => "", "relative" => "document.php?id={$_REQUEST['id']}");
 
 include "document.html.php";
-
-?>

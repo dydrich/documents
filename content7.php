@@ -1,4 +1,3 @@
-<div class="group_head">Gestione documento</div>
 <form action="dettaglio_documento.php?upd=1" method="post" enctype="multipart/form-data" id="doc_form">
     	<fieldset class="doc_fieldset">
 	    <legend>Dati di base</legend>

@@ -5,7 +5,7 @@ require_once "../../lib/start.php";
 check_session();
 check_permission(DIR_PERM|DSG_PERM|SEG_PERM);
 
-$navigation_label = "Area documenti - albo pretorio";
+$drawer_label = "Stampa riepilogo albo pretorio";
 
 $sel_docs = "SELECT data_upload FROM rb_documents WHERE doc_type = 7 ORDER BY rb_documents.data_upload DESC ";
 try{

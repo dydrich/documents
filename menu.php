@@ -15,7 +15,6 @@ while($type = $res_types->fetch_assoc()){
 ?>
 		
 <div class="smallbox" id="working">
-<h2 class="menu_head">Documenti</h2>
 <?php if ($_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|APS_PERM|AIS_PERM|AMS_PERM|DOC_PERM)): ?>
 	<p class="menu_label class_icon">Gestisci</p>
 	<ul class="menublock" style="" dir="rtl">

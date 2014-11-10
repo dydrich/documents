@@ -16,8 +16,6 @@ $res_docs = $db->execute($sel_docs);
 $sel_type = "SELECT tag FROM rb_tags WHERE tid = ".$_REQUEST['tag'];
 $res_type = $db->execute($sel_type);
 $doc_type = $res_type->fetch_assoc();
-$navigation_label = "Area documenti - tag";
+$drawer_label = "Gestione tag";
 
 include "tags.html.php";
-
-?>

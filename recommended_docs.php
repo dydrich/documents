@@ -34,10 +34,8 @@ while($doc = $res_docs->fetch_assoc()){
 	$materie[$doc['materia']]['docs'][] = $doc;
 }
 
-$navigation_label = "Registro elettronico - Documenti didattici consigliati";
+$drawer_label = "Documenti didattici consigliati";
 
 $_SESSION['no_file'] = array("referer" => "modules/documents/recommended_docs.php", "path" => "intranet/alunni/", "relative" => "documenti/documenti_consigliati.php");
 
 include "recommended_docs.html.php";
-
-?>

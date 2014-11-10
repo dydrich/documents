@@ -11,68 +11,71 @@ if($_REQUEST['action'] == 3){
 	$cat = $res_cat->fetch_assoc();
 }
 
-$navigation_label = "Albo pretorio - categorie di documento";
+$drawer_label = "Gestione categoria di documento";
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title><?php print $_SESSION['__config__']['intestazione_scuola'] ?></title>
-<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/reg.css" type="text/css" media="screen,projection" />
-<link rel="stylesheet" href="../../css/general.css" type="text/css" media="screen,projection" />
-<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/documents.css" type="text/css" media="screen,projection" />
-<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/jquery-ui.min.css" type="text/css" media="screen,projection" />
-<script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
-<script type="text/javascript" src="../../js/jquery-ui-1.10.3.custom.min.js"></script>
-<script type="text/javascript">
-$(function(){
-	$('#save').button();
-	$('#save').click(function(event){
-		event.preventDefault();
-		save_data();
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title><?php print $_SESSION['__config__']['intestazione_scuola'] ?></title>
+	<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/reg.css" type="text/css" media="screen,projection" />
+	<link rel="stylesheet" href="../../css/general.css" type="text/css" media="screen,projection" />
+	<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/documents.css" type="text/css" media="screen,projection" />
+	<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/jquery-ui.min.css" type="text/css" media="screen,projection" />
+	<script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="../../js/jquery-ui-1.10.3.custom.min.js"></script>
+	<script type="text/javascript" src="../../js/page.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		load_jalert();
+		setOverlayEvent();
+		$('#save').button();
+		$('#save').click(function(event){
+			event.preventDefault();
+			save_data();
+		});
 	});
-});
 
-var show_error = function(text){
-	//$('#iframe').show();
-	$('#not1').text(text);
-	$('#not1').addClass("error");
-	$('#not1').show(500);
-};
+	var show_error = function(text){
+		//$('#iframe').show();
+		$('#not1').text(text);
+		$('#not1').addClass("error");
+		$('#not1').show(500);
+	};
 
-var save_data = function(){
-	var url = "category_manager.php";
-	$.ajax({
-		type: "POST",
-		url: url,
-		data: $('#_form').serialize(),
-		dataType: 'json',
-		error: function() {
-			show_error("Errore di trasmissione dei dati");
-		},
-		succes: function() {
-			
-		},
-		complete: function(data){
-			r = data.responseText;
-			if(r == "null"){
-				return false;
+	var save_data = function(){
+		var url = "category_manager.php";
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: $('#_form').serialize(),
+			dataType: 'json',
+			error: function() {
+				show_error("Errore di trasmissione dei dati");
+			},
+			succes: function() {
+
+			},
+			complete: function(data){
+				r = data.responseText;
+				if(r == "null"){
+					return false;
+				}
+				var json = $.parseJSON(r);
+				if (json.status == "kosql"){
+					show_error(json.message);
+					console.log(json.dbg_message);
+				}
+				else {
+					$('#not1').text(json.message);
+					$('#not1').show(1000);
+					$('#not1').hide(3000);
+				}
 			}
-			var json = $.parseJSON(r);
-			if (json.status == "kosql"){
-				show_error(json.message);
-				console.log(json.dbg_message);
-			}
-			else {
-				$('#not1').text(json.message);
-				$('#not1').show(1000);
-				$('#not1').hide(3000);
-			}
-		}
-    });
-};
-</script>
+	    });
+	};
+	</script>
 </head>
 <body>
 <?php include "../../intranet/{$_SESSION['__mod_area__']}/header.php" ?>
@@ -83,28 +86,25 @@ var save_data = function(){
 </div>
 <div id="left_col">
 <div class="notification" id="not1"></div>
-	<div class="group_head">
-		Dettaglio categoria
-	</div>
-	<form method="post" id="_form" action="category_manager.php">
+	<form method="post" id="_form" class="no_border" action="category_manager.php">
 	<fieldset class="doc_fieldset">
 	<table id="cat_table">
 		<tr>
 			<td class="doc_title">Codice</td>
 			<td class="doc_field">
-				<input type="text" name="codice" id="codice" value="<?php if($cat) print $cat['codice'] ?>" class="full_field" />
+				<input type="text" name="codice" id="codice" value="<?php if(isset($cat)) print $cat['codice'] ?>" class="full_field" />
 			</td>
 		</tr>
 		<tr>
 			<td class="doc_title">Nome</td>
 			<td class="doc_field">
-				<input type="text" name="nome" id="nome" value="<?php if($cat) echo utf8_decode($cat['nome']) ?>" class="full_field" />
+				<input type="text" name="nome" id="nome" value="<?php if(isset($cat)) echo utf8_decode($cat['nome']) ?>" class="full_field" />
 			</td>
 		</tr>
 		<tr>
 			<td class="doc_title">Descrizione</td>
 			<td class="doc_field">
-				<textarea id="abstract" name="abstract" class="full_field"><?php if($cat && trim($cat['descrizione']) != "") echo trim(utf8_decode($cat['descrizione'])) ?></textarea>
+				<textarea id="abstract" name="abstract" class="full_field"><?php if(isset($cat) && trim($cat['descrizione']) != "") echo trim(utf8_decode($cat['descrizione'])) ?></textarea>
 			</td>
 		</tr>
 	</table>
@@ -119,5 +119,19 @@ var save_data = function(){
 </div>
 </div>
 <?php include "../../intranet/{$_SESSION['__mod_area__']}/footer.php" ?>
+<div id="drawer" class="drawer" style="display: none; position: absolute">
+	<div style="width: 100%; height: 430px">
+		<div class="drawer_link"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>intranet/<?php echo $_SESSION['__mod_area__'] ?>/index.php"><img src="../../images/6.png" style="margin-right: 10px; position: relative; top: 5%" />Home</a></div>
+		<div class="drawer_link"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>intranet/<?php echo $_SESSION['__mod_area__'] ?>/profile.php"><img src="../../images/33.png" style="margin-right: 10px; position: relative; top: 5%" />Profilo</a></div>
+		<div class="drawer_link"><a href="index.php"><img src="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>images/11.png" style="margin-right: 10px; position: relative; top: 5%" />Documenti</a></div>
+		<?php if(is_installed("com")){ ?>
+			<div class="drawer_link"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>modules/communication/load_module.php?module=com&area=<?php echo $_SESSION['__mod_area__'] ?>"><img src="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>images/57.png" style="margin-right: 10px; position: relative; top: 5%" />Comunicazioni</a></div>
+		<?php } ?>
+	</div>
+	<?php if (isset($_SESSION['__sudoer__'])): ?>
+		<div class="drawer_lastlink"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>intranet/<?php echo $_SESSION['__mod_area__'] ?>/admin/sudo_manager.php?action=back"><img src="../../images/14.png" style="margin-right: 10px; position: relative; top: 5%" />DeSuDo</a></div>
+	<?php endif; ?>
+	<div class="drawer_lastlink"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>shared/do_logout.php"><img src="../../images/51.png" style="margin-right: 10px; position: relative; top: 5%" />Logout</a></div>
+</div>
 </body>
 </html>
