@@ -29,6 +29,9 @@ if (isset($_REQUEST['page'])){
 	else if ($_REQUEST['page'] == "document"){
 		header("Location: {$_REQUEST['page']}.php?id={$_REQUEST['value']}");
 	}
+	else {
+		header("Location: {$_REQUEST['page']}.php");
+	}
 }
 else {
 	header("Location: {$module['front_page']}");
