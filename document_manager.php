@@ -114,6 +114,19 @@ try{
 			break;
 	}
 } catch (MySQLException $ex){
+	/*
+	 * albo pretorio
+	 * in caso di errore, restituire il progressivo
+	 */
+	if ($_POST['action'] == INSERT_OBJECT && $_POST['doc_type'] == "document" && $_POST['tipo'] == 7){
+		$max = $db->executeCount("SELECT MAX(progressivo_anno) FROM rb_documents WHERE anno_scolastico = ".$_POST['anno']);
+		$max += 1;
+		$prog = $db->executeCount("SELECT progressivo_atto FROM rb_progressivi_atto WHERE anno = ".date("Y"));
+		if (($prog - $max) == 2) {
+			$prog--;
+			$db->executeUpdate("UPDATE rb_progressivi_atto SET progressivo_atto = {$prog} WHERE anno = ".date("Y"));
+		}
+	}
 	$response['status'] = "kosql";
 	$response['dbg_message'] = "Query: {$ex->getQuery()} ------ Errore: {$ex->getMessage()}";
 	$response['message'] = "Errore nella registrazione dei dati";

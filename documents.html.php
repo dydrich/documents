@@ -50,10 +50,10 @@ else{
 			continue;	
 		}
 		$link = $doc['file'];
-		$ab = "<span class='bold_'>".$doc['titolo']."</span>";
+		$first_row = "<span class='bold_'>".$doc['titolo']."</span>";
 
 		if ($doc['doc_type'] == 7){
-			$ab = "<span class='bold_'>".$doc['progressivo_atto']."</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$ab;
+			$first_row = "<span class='bold_'>".$doc['progressivo_atto']."</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$first_row;
 		}
 		else if ($doc['doc_type'] == 4 && $doc['materia'] != ""){
 			try{
@@ -62,7 +62,7 @@ else{
 				$ex->redirect();
 			}
 			//$ab .= " (di ".$doc['cognome']." ".$doc['nome']." - {$materia}";
-			$ab .= " ({$materia}";
+			$first_row .= " - {$materia}";
 			if ($doc['classe_rif'] != "" && $doc['classe_rif'] != 0){
 				$desc_cls = "";
 				switch ($doc['classe_rif']){
@@ -82,24 +82,23 @@ else{
 						$desc_cls = "classi quinte";
 						break;
 				}
-				$ab .= " - {$desc_cls}";
+				$first_row .= ", {$desc_cls}";
 			}
 		}
-		else {
-			$ab .= " (di ".$doc['cognome']." ".$doc['nome'];
-		}
+		$data_upl = substr($doc['data_upload'], 0, 10);
+		$time_upl = substr($doc['data_upload'], 11);
+		$second_row = "<br />Pubblicato il ".format_date($data_upl, SQL_DATE_STYLE, IT_DATE_STYLE, "/")." alle ".$time_upl." da ".$doc['cognome']." ".$doc['nome'];
+
 		if ($doc['doc_type'] == 4 && $doc['ordine_scuola'] != 4){
 			try{
 				$school = $db->executeCount("SELECT tipo FROM rb_tipologia_scuola WHERE id_tipo = {$doc['ordine_scuola']}");
 			} catch (MySQLException $ex){
 				$ex->redirect();
 			}
-			$ab .= " ".strtolower($school);
+			$first_row .= " ".strtolower($school);
 		}
-		if ($doc['doc_type'] != 7){
-			$ab .= ")";
-		}
-		if($ab == "") $ab = "Nessuna descrizione presente";
+
+		if($first_row == "") $first_row = "Nessuna descrizione presente";
 		list($y, $m, $d) = explode("-", $doc['data_upload']);
 		$check_y = $doc['anno_scolastico'];
 		$y_label = "Anno scolastico ".$doc['descrizione'];
@@ -126,7 +125,10 @@ else{
 		}
 ?>
 	<p class="doc">
-		<a href="document.php?id=<?php print $doc['id'] ?>"><?php echo truncateString(stripslashes($ab), 120) ?></a>
+		<a href="document.php?id=<?php print $doc['id'] ?>">
+			<span style="font-weight: bold"><?php echo truncateString(stripslashes($first_row), 120) ?></span>
+			<span style="font-weight: normal"><?php echo truncateString(stripslashes($second_row), 120) ?></span>
+		</a>
 	</p>
 <?php
 	}

@@ -7,6 +7,7 @@ class AlboDocument extends Document{
 	private $actNumber;
 	private $protocol;
 	private $progressive;
+	private $progressiveString;
 	private $dueDate;
 	private $category;
 	
@@ -42,12 +43,24 @@ class AlboDocument extends Document{
 			$this->datasource->executeUpdate("INSERT INTO rb_progressivi_albo (progressivo_atto, anno) VALUES (1, ".date("Y").")");
 			$prog = $this->datasource->executeCount($sel_prog);
 		}
+		$max = $this->datasource->executeCount("SELECT MAX(progressivo_anno) FROM rb_documents WHERE doc_type = 7 AND YEAR(data_upload) = ".date("Y"));
+		if ($max != null && $max != false && $max != "") {
+			$max++;
+		}
+		else {
+			$max = 1;
+		}
+		if ($prog > $max) {
+			$prog = $max;
+		}
 		$progressivo_atto = $prog."/".date("Y");
-		$this->progressive = $progressivo_atto;
+		$this->progressive = $prog;
+		$this->progressiveString = $progressivo_atto;
 	}
 	
 	private function updateProgressive(){
 		$prog = $this->progressive + 1;
+		//$max = $this->datasource->executeCount("SELECT MAX(progressivo_anno) FROM rb_documents WHERE anno_scolastico = ".$this->year);
 		$upd = "UPDATE rb_progressivi_albo SET progressivo_atto = {$prog} WHERE anno = ".date("Y");
 		$this->datasource->executeUpdate($upd);
 	}
@@ -90,7 +103,7 @@ class AlboDocument extends Document{
 	
 	public function save(){
 		$this->askForProgressive();
-		$this->id = $this->datasource->executeUpdate("INSERT INTO rb_documents (progressivo_atto, data_upload, file, doc_type, titolo, abstract, anno_scolastico, owner, scadenza, categoria, evidenziato, protocollo, numero_atto) VALUES ('{$this->progressive}', NOW(), '{$this->file}', {$this->documentType}, '{$this->title}', '{$this->abstract}', {$this->year}, {$_SESSION['__user__']->getUid()}, '{$this->dueDate}', {$this->category}, ".field_null($this->highlited, true).", ".field_null($this->protocol, true).", ".field_null($this->actNumber, false).")");
+		$this->id = $this->datasource->executeUpdate("INSERT INTO rb_documents (progressivo_anno, progressivo_atto, data_upload, file, doc_type, titolo, abstract, anno_scolastico, owner, scadenza, categoria, evidenziato, protocollo, numero_atto) VALUES ({$this->progressive}, '{$this->progressiveString}', NOW(), '{$this->file}', {$this->documentType}, '{$this->title}', '{$this->abstract}', {$this->year}, {$_SESSION['__user__']->getUid()}, '{$this->dueDate}', {$this->category}, ".field_null($this->highlited, true).", ".field_null($this->protocol, true).", ".field_null($this->actNumber, false).")");
 		$this->updateProgressive();
 	}
 	
