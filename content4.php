@@ -1,4 +1,4 @@
-    <form id="doc_form" action="doc.php?upd=1" method="post" enctype="multipart/form-data">
+    <form id="doc_form" action="doc.php?upd=1" method="post" enctype="multipart/form-data" class="no_border">
     <fieldset class="doc_fieldset">
     <legend>Dati di base</legend>
     <table>

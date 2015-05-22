@@ -1,4 +1,4 @@
-<form action="document_manager.php" method="post" enctype="multipart/form-data" id="doc_form">
+<form action="document_manager.php" method="post" enctype="multipart/form-data" id="doc_form" class="no_border">
     <fieldset class="doc_fieldset">
     <legend>Dati file</legend>
     <table>
