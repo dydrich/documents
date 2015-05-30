@@ -1,3 +1,19 @@
+<?php
+/*
+ * estrazione ultimi documenti pubblicati
+*/
+$number_docs = 24;
+$sel_ev_docs = "SELECT id, evidenziato AS data, file, doc_type, abstract, titolo, link, permessi, privato FROM rb_documents WHERE evidenziato IS NOT NULL AND evidenziato > NOW() ORDER BY data_upload DESC";
+$res_ev = $db->execute($sel_ev_docs);
+$count_docs = $res_ev->num_rows;
+if ($count_docs < 4) {
+	$ticker_height = 5 + (25 * $count_docs);
+}
+else {
+	$ticker_height = 100;
+}
+
+?>
 <script>
 	function ticker(){
 		$('#ticker li:first').slideUp(
@@ -9,14 +25,9 @@
 </script>
 <div class="welcome">
 	<p id="w_head" style="margin-bottom: 0">Documenti in evidenza</p>
+	<div id="ticker_container" style="height: <?php echo $ticker_height ?>px">
 		<ul id="ticker" class="ticker">
     <?php
-    /*
-     * estrazione ultimi documenti pubblicati
-    */
-    $number_docs = 24;
-    $sel_ev_docs = "SELECT id, evidenziato AS data, file, doc_type, abstract, titolo, link, permessi, privato FROM rb_documents WHERE evidenziato IS NOT NULL AND evidenziato > NOW() ORDER BY data_upload DESC";
-	$res_ev = $db->execute($sel_ev_docs);
 	if($res_ev->num_rows > 0){
 		$x = 0;
 		while($doc_ev = $res_ev->fetch_assoc()){
@@ -45,4 +56,5 @@
 	}
 	?>
 		</ul>
+	</div>
 </div>
