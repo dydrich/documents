@@ -12,19 +12,19 @@
 	<script type="text/javascript" src="../../js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script type="text/javascript" src="../../js/page.js"></script>
 	<script type="text/javascript">
-	$(function(){
-		load_jalert();
-		setOverlayEvent();
-		$('#button').button();
+		$(function(){
+			load_jalert();
+			setOverlayEvent();
+			$('#button').button();
 
-		$('#button').click(function(){
-			download_file();
+			$('#button').click(function(){
+				download_file();
+			});
 		});
-	});
 
-	var download_file = function(){
-		document.location.href = "download_manager.php?id=<?php echo $doc->getID() ?>&doc=document";
-	};
+		var download_file = function(){
+			document.location.href = "download_manager.php?id=<?php echo $doc->getID() ?>&doc=document";
+		};
 
 	</script>
 </head>

@@ -31,7 +31,7 @@ check_session();
 }
 else{
 ?>
-<input class="form_input" type="file" name="fname" id="fname" class="file" style="width: 90%" onchange="parent.loading(30); document.forms[0].submit()" />
+<input class="form_input file" type="file" name="fname" id="fname" style="width: 90%" onchange="parent.loading(30); document.forms[0].submit()" />
 <?php
 }
 ?>
@@ -86,11 +86,11 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 	if ($_GET['upl_type'] == "document") {
 		switch ($ret){
 			case UploadManager::FILE_EXISTS:
-				print("<script>parent.show_error('File presente in archivio'); parent.reload_iframe();</script>");
+				print("<script>parent.j_alert('error', 'File presente in archivio'); parent.reload_iframe();</script>");
 				break;
 			case UploadManager::UPL_ERROR:
 				//echo "ko|There was an error uploading the file, please try again!|".$_FILES['fname']['name'];
-				print("<script>parent.show_error('Errore nella copia del file. Riprovare tra poco'); </script>");
+				print("<script>parent.j_alert('error', 'Errore nella copia del file. Riprovare tra poco'); </script>");
 				break;
 			case UploadManager::UPL_OK:
 				print("<script>parent.loaded('".$file."'); $('#_span').html('$html'); </script>");

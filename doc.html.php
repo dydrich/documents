@@ -82,23 +82,17 @@
 		});
 
 		var loading = function(vara){
-			$('#not1').text("Attendere il caricamento del file");
-			$('#not1').show(500);
+			background_process("Attendere il caricamento del file", vara, false);
 		};
 
 		var loaded = function(r){
-			//var json = $.parseJSON(r);
-			$('#not1').text("Caricamento completato");
+			clearTimeout(bckg_timer);
+			$('#background_msg').text("Operazione conclusa");
 			$('#del_upl').show();
-			$('#not1').hide(1500);
 			$('#server_file').val(r);
-		};
-
-		var show_error = function(text){
-			//$('#iframe').show();
-			$('#not1').text(text);
-			$('#not1').addClass("error");
-			$('#not1').show(500);
+			setTimeout(function() {
+				$('#background_msg').dialog("close");
+			}, 2000);
 		};
 
 		var toggle_classes = function(param){
@@ -202,7 +196,7 @@
 				data: $('#doc_form').serialize(),
 				dataType: 'json',
 				error: function() {
-					show_error("Errore di trasmissione dei dati");
+					j_alert("error", "Errore di trasmissione dei dati");
 				},
 				succes: function() {
 
@@ -214,13 +208,11 @@
 					}
 					var json = $.parseJSON(r);
 					if (json.status == "kosql"){
-						show_error(json.message);
+						j_alert("error", json.message);
 						console.log(json.dbg_message);
 					}
 					else {
-						$('#not1').text(json.message);
-						$('#not1').show(1000);
-						$('#not1').hide(3000);
+						j_alert("alert", json.message);
 						if (par == 2){
 							window.setTimeout(function(){document.location.href = "docs.php?tipo="+tipo}, 4000);
 						}
@@ -231,6 +223,13 @@
 								}, 4000
 							);
 						}
+						else {
+							window.setTimeout(function() {
+								$('fieldset').animate({
+									backgroundColor: '#EEEEEE'
+								}, 900);
+							}, 3000);
+						}
 					}
 				}
 		    });
@@ -238,7 +237,7 @@
 
 		var del_file = function(){
 			if($('#server_file').val() == ""){
-				alert("Non hai ancora fatto l'upload di alcun file");
+				j_alert("error", "Non hai ancora fatto l'upload di alcun file");
 				return false;
 			}
 			var url = "document_manager.php";
@@ -249,7 +248,7 @@
 				data: {server_file: $('#server_file').val(), action: "4", tipo: $('#tipo').val(), doc_type: $('#doc_type').val()},
 				dataType: 'json',
 				error: function() {
-					show_error("Errore di trasmissione dei dati");
+					j_alert("error", "Errore di trasmissione dei dati");
 				},
 				succes: function() {
 
@@ -261,14 +260,11 @@
 					}
 					var json = $.parseJSON(r);
 					if (json.status == "kosql"){
-						show_error(json.message);
+						j_alert("error", json.message);
 						console.log(json.dbg_message);
 					}
 					else {
-						$('#not1').removeClass('error');
-						$('#not1').text(json.message);
-						$('#not1').show(1000);
-						$('#not1').hide(3000);
+						j_alert("alert", json.message);
 						reload_iframe();
 						$('#server_file').val("");
 						$('#del_upl').hide();

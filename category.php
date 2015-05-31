@@ -37,13 +37,6 @@ $drawer_label = "Gestione categoria di documento";
 		});
 	});
 
-	var show_error = function(text){
-		//$('#iframe').show();
-		$('#not1').text(text);
-		$('#not1').addClass("error");
-		$('#not1').show(500);
-	};
-
 	var save_data = function(){
 		var url = "category_manager.php";
 		$.ajax({
@@ -68,9 +61,17 @@ $drawer_label = "Gestione categoria di documento";
 					console.log(json.dbg_message);
 				}
 				else {
-					$('#not1').text(json.message);
-					$('#not1').show(1000);
-					$('#not1').hide(3000);
+					j_alert("alert", json.message);
+					window.setTimeout(function() {
+						if ($('#action').val() == 1) {
+							document.location.href = "categories.php";
+						}
+						else {
+							$('fieldset').animate({
+								backgroundColor: '#EEEEEE'
+							}, 900);
+						}
+					}, 3000);
 				}
 			}
 	    });
@@ -85,7 +86,11 @@ $drawer_label = "Gestione categoria di documento";
 <?php include "menu.php" ?>
 </div>
 <div id="left_col">
-<div class="notification" id="not1"></div>
+	<div style="top: -10px; margin-left: 35px; margin-bottom: -10px" class="rb_button">
+		<a href="categories.php">
+			<img src="../../images/47bis.png" style="padding: 12px 0 0 12px" />
+		</a>
+	</div>
 	<form method="post" id="_form" class="no_border" action="category_manager.php">
 	<fieldset class="doc_fieldset">
 	<table id="cat_table">

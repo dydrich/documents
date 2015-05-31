@@ -12,52 +12,55 @@
 	<script type="text/javascript" src="../../js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script type="text/javascript" src="../../js/page.js"></script>
 	<script type="text/javascript">
-	$(function(){
-		load_jalert();
-		setOverlayEvent();
-		$('#new_link').click(function(){
-			document.location.href = "category.php?id=0&action=1";
+		$(function(){
+			load_jalert();
+			setOverlayEvent();
+			$('#new_link').click(function(){
+				document.location.href = "category.php?id=0&action=1";
+			});
+			$('.del_x').click(function(event){
+				event.preventDefault();
+				cat = $(this).attr("data-cat");
+				del_cat(cat, 2);
+			})
 		});
-	});
 
-	var del_cat = function(id_cat, action, row){
-		if(action == 2){
-			if(!confirm("Confermi l'eliminazione di questa categoria?")){
-				return false;
-			}
-			else{
-				$.ajax({
-					type: "POST",
-					url: "category_manager.php",
-					data: {id: id_cat, action: action},
-					dataType: 'json',
-					error: function() {
-						show_error("Errore di trasmissione dei dati");
-					},
-					succes: function() {
+		var del_cat = function(id_cat, action){
+			if(action == 2){
+				if(!confirm("Confermi l'eliminazione di questa categoria?")){
+					return false;
+				}
+				else{
+					$.ajax({
+						type: "POST",
+						url: "category_manager.php",
+						data: {id: id_cat, action: action},
+						dataType: 'json',
+						error: function() {
+							show_error("Errore di trasmissione dei dati");
+						},
+						succes: function() {
 
-					},
-					complete: function(data){
-						r = data.responseText;
-						if(r == "null"){
-							return false;
+						},
+						complete: function(data){
+							r = data.responseText;
+							if(r == "null"){
+								return false;
+							}
+							var json = $.parseJSON(r);
+							if (json.status == "kosql"){
+								show_error(json.message);
+								console.log(json.dbg_message);
+							}
+							else {
+								$('#cat'+id_cat).fadeOut(2000);
+								j_alert("alert", json.message);
+							}
 						}
-						var json = $.parseJSON(r);
-						if (json.status == "kosql"){
-							show_error(json.message);
-							console.log(json.dbg_message);
-						}
-						else {
-							$('#tr'+row).hide();
-							$('#not1').text(json.message);
-							$('#not1').show(1000);
-							$('#not1').hide(3000);
-						}
-					}
-			    });
+				    });
+				}
 			}
-		}
-	};
+		};
 	</script>
 </head>
 <body>
@@ -75,15 +78,14 @@
 		</div>
 		<div class="card_container" style="margin-top: 20px">
  	    <?php
- 	    $row = 0;
  	    while($cat = $res_type->fetch_assoc()){
  	    ?>
 	        <a href="category.php?id=<?php echo $cat['id_categoria']?>&action=3">
-		        <div class="card" id="del_cat<?php echo $cat['id_categoria'] ?>">
+		        <div class="card" id="cat<?php echo $cat['id_categoria'] ?>">
 			        <div class="card_title accent_color">
 				        <?php echo utf8_decode($cat['nome']) ?>
 				        <div style="float: right; margin-right: 20px">
-					        <a href="../../shared/no_js.php" class="del_x" onclick="del_cat(<?php echo $cat['id_categoria'] ?>, 2, <?php echo $row ?>)">
+					        <a href="../../shared/no_js.php" class="del_x" data-cat="<?php echo $cat['id_categoria'] ?>">
 						        <img src="../../images/51.png" style="position: relative; bottom: 2px" />
 					        </a>
 				        </div>
@@ -94,8 +96,7 @@
 		        </div>
 		    </a>
  	    <?php 
- 	    	$row++;
- 	    } 
+ 	    }
  	    ?>
 		</div>
 	</div>

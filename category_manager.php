@@ -7,9 +7,9 @@ check_permission(DSG_PERM);
 
 $id = $_REQUEST['id'];
 if($_REQUEST['action'] != 2){
-	$codice = $_REQUEST['codice'];
-	$nome = utf8_encode($_REQUEST['nome']);
-	$descrizione = utf8_encode($_REQUEST['abstract']);	
+	$codice = $db->real_escape_string($_REQUEST['codice']);
+	$nome = utf8_encode($db->real_escape_string($_REQUEST['nome']));
+	$descrizione = utf8_encode($db->real_escape_string($_REQUEST['abstract']));
 }
 header("Content-type: application/json");
 switch($_REQUEST['action']){

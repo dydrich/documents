@@ -12,13 +12,13 @@
 	<script type="text/javascript" src="../../js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script type="text/javascript" src="../../js/page.js"></script>
 	<script type="text/javascript">
-	$(function() {
-		load_jalert();
-		setOverlayEvent();
-	    $( "#accordion" ).accordion({
-	      heightStyle: "content"
-	    });
-	  });
+		$(function() {
+			load_jalert();
+			setOverlayEvent();
+		    $( "#accordion" ).accordion({
+		      heightStyle: "content"
+		    });
+		  });
 	</script>
 </head>
 <body>
