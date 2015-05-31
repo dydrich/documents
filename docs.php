@@ -27,6 +27,7 @@ $sel_type = "SELECT commento FROM rb_document_types WHERE id = ".$_REQUEST['tipo
 $doc_type = $db->executeCount($sel_type);
 $drawer_label = "Gestione ". strtolower($doc_type);
 
+/*
 if(!isset($_REQUEST['second'])){
 	$res_docs = $db->execute($sel_docs);
 	//print $sel_links;
@@ -56,5 +57,10 @@ $colspan = 5;
 $link = basename($_SERVER['PHP_SELF']);
 $count_name = "count_docs";
 $nav_params = "&tipo={$_REQUEST['tipo']}";
+*/
+
+$res_docs = $db->execute($sel_docs);
+$count = $res_docs->num_rows;
+$_SESSION['count_docs'] = $count;
 
 include "docs.html.php";
