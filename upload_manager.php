@@ -6,6 +6,20 @@ require_once "../../lib/MimeType.php";
 
 check_session();
 
+$mod = false;
+$docID = 0;
+if (isset($_REQUEST['docID']) && $_REQUEST['docID'] != 0) {
+	$mod = true;
+	$docID = $_REQUEST['docID'];
+	$f = $_REQUEST['f'];
+	if ($_REQUEST['upl_type'] == "document"){
+		$fp = "../../download/{$_REQUEST['tipo']}/{$f}";
+	}
+	if (file_exists($fp)){
+		unlink($fp);
+	}
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -72,6 +86,10 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 	$upload_manager = new UploadManager($path, $_FILES['fname'], $_GET['upl_type'], $db);
 	if (isset($_SESSION['registro'])){
 		$upload_manager->setData($_SESSION['registro']);
+	}
+	else if ($docID != 0) {
+		$data = array("docID" => $docID, "deleteFile" => 1);
+		$upload_manager->setData(($data));
 	}
 	$ret = $upload_manager->upload();
 	$fs = 00;

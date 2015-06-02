@@ -215,7 +215,9 @@
 					else {
 						j_alert("alert", json.message);
 						if (par == 2){
-							window.setTimeout(function(){document.location.href = "docs.php?tipo="+tipo}, 4000);
+							window.setTimeout(function(){
+								document.location.href = "docs.php?tipo="+tipo;
+							}, 4000);
 						}
 						else if (par == 1) {
 							window.setTimeout(
@@ -311,8 +313,9 @@
 			_tags.splice(tag, 1);
 		};
 
-		var load_iframe = function(){
-			$('#if_container').html('<div id="iframe"><iframe src="upload_manager.php?upl_type=document&area=teachers&tipo=<?php echo $tipo ?>" id="aframe"></iframe></div><a href="#" onclick="del_file()" id="del_upl">Annulla upload</a>');
+		var load_iframe = function(file){
+			$('#server_file').val('');
+			$('#if_container').html('<div id="iframe"><iframe src="upload_manager.php?upl_type=document&f='+file+'&area=teachers&tipo=<?php echo $tipo ?>&docID=<?php echo $_REQUEST['_i'] ?>" id="aframe"></iframe></div><a href="#" onclick="del_file()" id="del_upl">Annulla upload</a>');
 		};
 
 	</script>

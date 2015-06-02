@@ -119,7 +119,7 @@
             <td class="doc_field" id="if_container">
             <?php if(isset($current_doc)){ ?>
 	            <input class="form_input" type="text" name="fname" id="fname" style="width: 75%" readonly value="<?php print $current_doc['file'] ?>"/>
-	            <a href="#" onclick="load_iframe()" style="margin-left: 15px">Modifica file</a>
+	            <a href="#" onclick="load_iframe('<?php print $current_doc['file'] ?>')" style="margin-left: 15px">Modifica file</a>
 	            <?php }  else{ ?>
 	            <div id="iframe"><iframe src="upload_manager.php?upl_type=document&area=teachers&tipo=4" id="aframe"></iframe></div>
 				<a href="#" onclick="del_file()" id="del_upl" style="">Annulla</a>
