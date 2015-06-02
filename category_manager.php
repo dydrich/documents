@@ -16,17 +16,17 @@ switch($_REQUEST['action']){
 	case 1:
 		// insert
 		$statement = "INSERT INTO rb_categorie_docs (tipo_documento, codice, nome, descrizione) VALUES (7, '$codice', '$nome', '$descrizione')";
-		$msg = "Inserimento completato";
+		$msg = "La categoria è stata inserita correttamente";
 		break;
 	case 2:
 		// delete
 		$statement = "DELETE FROM rb_categorie_docs WHERE id_categoria = $id";
-		$msg = "Cancellazione completata";
+		$msg = "La categoria è stata cancellata correttamente";
 		break;
 	case 3:
 		// update
 		$statement = "UPDATE rb_categorie_docs SET codice = '$codice', nome = '$nome', descrizione = '$descrizione' WHERE id_categoria = $id";
-		$msg = "Modifica completata";
+		$msg = "La categoria è stata modificata correttamente";
 		break;
 }
 

@@ -19,6 +19,7 @@ $drawer_label = "Gestione categoria di documento";
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title><?php print $_SESSION['__config__']['intestazione_scuola'] ?></title>
+	<link rel="stylesheet" href="../../font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/reg.css" type="text/css" media="screen,projection" />
 	<link rel="stylesheet" href="../../css/general.css" type="text/css" media="screen,projection" />
 	<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/documents.css" type="text/css" media="screen,projection" />
@@ -27,55 +28,55 @@ $drawer_label = "Gestione categoria di documento";
 	<script type="text/javascript" src="../../js/jquery-ui-1.10.3.custom.min.js"></script>
 	<script type="text/javascript" src="../../js/page.js"></script>
 	<script type="text/javascript">
-	$(function(){
-		load_jalert();
-		setOverlayEvent();
-		$('#save').button();
-		$('#save').click(function(event){
-			event.preventDefault();
-			save_data();
+		$(function(){
+			load_jalert();
+			setOverlayEvent();
+			$('#save').button();
+			$('#save').click(function(event){
+				event.preventDefault();
+				save_data();
+			});
 		});
-	});
 
-	var save_data = function(){
-		var url = "category_manager.php";
-		$.ajax({
-			type: "POST",
-			url: url,
-			data: $('#_form').serialize(),
-			dataType: 'json',
-			error: function() {
-				show_error("Errore di trasmissione dei dati");
-			},
-			succes: function() {
+		var save_data = function(){
+			var url = "category_manager.php";
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: $('#_form').serialize(),
+				dataType: 'json',
+				error: function() {
+					show_error("Si è verificato un errore di rete: controlla lo stato della tua connessione e riprova");
+				},
+				succes: function() {
 
-			},
-			complete: function(data){
-				r = data.responseText;
-				if(r == "null"){
-					return false;
+				},
+				complete: function(data){
+					r = data.responseText;
+					if(r == "null"){
+						return false;
+					}
+					var json = $.parseJSON(r);
+					if (json.status == "kosql"){
+						show_error(json.message);
+						console.log(json.dbg_message);
+					}
+					else {
+						j_alert("alert", json.message);
+						window.setTimeout(function() {
+							if ($('#action').val() == 1) {
+								document.location.href = "categories.php";
+							}
+							else {
+								$('fieldset').animate({
+									backgroundColor: '#EEEEEE'
+								}, 900);
+							}
+						}, 3000);
+					}
 				}
-				var json = $.parseJSON(r);
-				if (json.status == "kosql"){
-					show_error(json.message);
-					console.log(json.dbg_message);
-				}
-				else {
-					j_alert("alert", json.message);
-					window.setTimeout(function() {
-						if ($('#action').val() == 1) {
-							document.location.href = "categories.php";
-						}
-						else {
-							$('fieldset').animate({
-								backgroundColor: '#EEEEEE'
-							}, 900);
-						}
-					}, 3000);
-				}
-			}
-	    });
-	};
+		    });
+		};
 	</script>
 </head>
 <body>

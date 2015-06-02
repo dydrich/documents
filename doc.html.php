@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title><?php print $_SESSION['__config__']['intestazione_scuola'] ?>:: area documenti</title>
+	<link rel="stylesheet" href="../../font-awesome/css/font-awesome.min.css">
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/reg.css" type="text/css" media="screen,projection" />
 	<link rel="stylesheet" href="../../css/general.css" type="text/css" media="screen,projection" />
@@ -121,7 +122,7 @@
 		    go_ahead = true;
 		    if($('#titolo').val() == ""){
 				idx++;
-				msg += idx+". Il titolo e` obbligatorio\n";
+				msg += idx+". Il titolo è obbligatorio\n";
 				go_ahead = false;
 				$('#r_titolo').addClass("has_error");
 		    }
@@ -130,7 +131,7 @@
 		    }
 		    if($('#abstract').val() == ""){
 				idx++;
-				msg += idx+". L'abstract e` obbligatorio\n";
+				msg += idx+". L'abstract è obbligatorio\n";
 				go_ahead = false;
 				$('#r_abstract').addClass("has_error");
 		    }
@@ -139,7 +140,7 @@
 		    }
 		    if($('#server_file').val() == ""){
 				idx++;
-				msg += idx+". Il file e` obbligatorio\n";
+				msg += idx+". Il file è obbligatorio\n";
 				go_ahead = false;
 				$('#r_file').addClass("has_error");
 		    }
@@ -149,7 +150,7 @@
 		    if (tipo == 4){
 		        if($('#categoria').val() == "0"){
 		            idx++;
-		            msg += idx+". La categoria e` obbligatoria\n";
+		            msg += idx+". La categoria è obbligatoria\n";
 		            go_ahead = false;
 		            $('#r_cat').addClass("has_error");
 		        }
@@ -157,7 +158,7 @@
 		            $('#r_cat').removeClass("has_error");
 		            if($('#categoria').val() == "2" && $('#materia').val() == "0"){
 		                idx++;
-		                msg += idx+". La materia e` obbligatoria\n";
+		                msg += idx+". La materia è obbligatoria\n";
 		                go_ahead = false;
 		                $('#r_cat').addClass("has_error");
 		            }
@@ -166,7 +167,7 @@
 		    if (tipo == 7){
 		        if($('#categoria').val() == "0"){
 		            idx++;
-		            msg += idx+". La categoria e` obbligatoria\n";
+		            msg += idx+". La categoria è obbligatoria\n";
 		            go_ahead = false;
 		            $('#r_cat').addClass("has_error");
 		        }
@@ -175,7 +176,7 @@
 		        }
 		        if($('#scadenza').val() == ""){
 		            idx++;
-		            msg += idx+". La scadenza e` obbligatoria\n";
+		            msg += idx+". La scadenza è obbligatoria\n";
 		            go_ahead = false;
 		            $('#r_scad').addClass("has_error");
 		        }
@@ -196,7 +197,7 @@
 				data: $('#doc_form').serialize(),
 				dataType: 'json',
 				error: function() {
-					j_alert("error", "Errore di trasmissione dei dati");
+					j_alert("error", "Si è verificato un errore di rete: controlla lo stato della tua connessione e riprova");
 				},
 				succes: function() {
 
@@ -248,7 +249,7 @@
 				data: {server_file: $('#server_file').val(), action: "4", tipo: $('#tipo').val(), doc_type: $('#doc_type').val()},
 				dataType: 'json',
 				error: function() {
-					j_alert("error", "Errore di trasmissione dei dati");
+					j_alert("error", "Si è verificato un errore di rete: controlla lo stato della tua connessione e riprova");
 				},
 				succes: function() {
 
@@ -324,7 +325,11 @@
 <?php include "menu.php" ?>
 </div>
 <div id="left_col">
-<div class="notification" id="not1"></div>
+	<div style="top: -10px; margin-left: 35px; margin-bottom: -20px" class="rb_button">
+		<a href="docs.php?tipo=<?php echo $tipo ?>">
+			<img src="../../images/47bis.png" style="padding: 12px 0 0 12px" />
+		</a>
+	</div>
 <?php 
 if ($tipo == 4 || $tipo == 7){
 	include "content{$tipo}.php";

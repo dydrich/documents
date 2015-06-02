@@ -40,12 +40,12 @@ if ($_POST['action'] == 4){
 	}
 	else {
 		$response['status'] = "ko";
-		$response['message'] = "File {$fp} inesistente";
+		$response['message'] = "Il file richiesto ({$fp}) non è presente sul server";
 		$res = json_encode($response);
 		echo $res;
 		exit;
 	}
-	$response['message'] = "File cancellato";
+	$response['message'] = "Il file è stato cancellato";
 	$res = json_encode($response);
 	echo $res;
 	exit;
@@ -85,13 +85,13 @@ switch ($_POST['doc_type']){
 		$doc = new RBFile($data, new MySQLDataLoader($db));
 		$doc->save();
 		$response['status'] = "ok";
-		$response['message'] = "File inviato";
+		$response['message'] = "Il file è stato inviato al destinatario";
 		exit;
 		break;
 	default:
 		$response['status'] = "ko";
 		$response['dbg_message'] = "Tipo documento sconosciuto: {$_POST['doc_type']} o tipo sconosciuto: {$_POST['tipo']}";
-		$response['message'] = "Errore nella trasmissione dei dati";
+		$response['message'] = "Si è verificato un errore di rete: controlla lo stato della tua connessione e riprova";
 		$res = json_encode($response);
 		echo $res;
 		exit;
@@ -102,15 +102,15 @@ try{
 	switch ($_POST['action']){
 		case INSERT_OBJECT:
 			$doc->save();
-			$response['message'] = "Documento inserito";
+			$response['message'] = "Il documento è stato inserito";
 			break;
 		case UPDATE_OBJECT:
 			$doc->update();
-			$response['message'] = "Documento modificato";
+			$response['message'] = "Il documento è stato modificato";
 			break;
 		case DELETE_OBJECT:
 			$doc->delete();
-			$response['message'] = "Documento cancellato";
+			$response['message'] = "Il documento è stato cancellato";
 			break;
 	}
 } catch (MySQLException $ex){
@@ -129,7 +129,7 @@ try{
 	}
 	$response['status'] = "kosql";
 	$response['dbg_message'] = "Query: {$ex->getQuery()} ------ Errore: {$ex->getMessage()}";
-	$response['message'] = "Errore nella registrazione dei dati";
+	$response['message'] = "Si è verificato un errore di rete: controlla lo stato della tua connessione e riprova";
 	$res = json_encode($response);
 	echo $res;
 	exit;
