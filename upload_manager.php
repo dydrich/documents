@@ -45,7 +45,7 @@ if (isset($_REQUEST['docID']) && $_REQUEST['docID'] != 0) {
 }
 else{
 ?>
-<input class="form_input file" type="file" name="fname" id="fname" style="width: 90%" onchange="parent.loading(30); document.forms[0].submit()" />
+<input class="form_input file" type="file" name="fname" id="fname" style="width: 90%" onchange="parent.loading(300); document.forms[0].submit()" />
 <?php
 }
 ?>
@@ -111,7 +111,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 				print("<script>parent.j_alert('error', 'Errore nella copia del file. Riprovare tra poco'); </script>");
 				break;
 			case UploadManager::UPL_OK:
-				print("<script>parent.loaded('".$file."'); $('#_span').html('$html'); </script>");
+				print("<script>parent.loading_done('".$file."'); $('#_span').html('$html'); </script>");
 				break;
 		}
 	}
@@ -125,7 +125,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 				print("<script>parent.timeout = 0; window.setTimeout('parent._alert(\"There was an error uploading the file, please try again!\")', 100); </script>");
 				break;
 			default:
-				echo "<script>parent.timeout = 0; var cont = parent.document.getElementById('att_container');var np = document.createElement('p');np.setAttribute('id', 'att_{$ret}');var _a = document.createElement('a'); _a.setAttribute('href', '#');_a.setAttribute('onclick', 'show_menu(event, {$ret}, \"{$file}\")');_a.style.textDecoration='none';_a.appendChild(document.createTextNode('{$file_name}'));np.appendChild(_a);cont.appendChild(np);</script>";
+				echo "<script>parent.loaded('File caricato'); var cont = parent.document.getElementById('att_container');var np = document.createElement('p');np.setAttribute('id', 'att_{$ret}');var _a = document.createElement('a'); _a.setAttribute('href', '#');_a.setAttribute('onclick', 'show_menu(event, {$ret}, \"{$file}\")');_a.style.textDecoration='none';_a.appendChild(document.createTextNode('{$file_name}'));np.appendChild(_a);cont.appendChild(np);</script>";
 				break;
 		}	
 	}

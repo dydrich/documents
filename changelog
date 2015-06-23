@@ -1,3 +1,22 @@
+3.0.5
+gestione registri di classe per ordine di scuola
+
+3.0.4
+modifiche grafiche
+
+3.0.3
+nuova gestione j_alert
+
+3.0.12
+issue #1: modifica file in documento
+
+3.0.11
+bug fix (no_file.php)
+
+3.0.10
+completato il passaggio al nuovo sistema di notifiche con la correzione dei messaggi
+code cleaning
+
 3.0.9
 sistema notifiche j_alert
 

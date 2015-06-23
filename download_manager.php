@@ -55,7 +55,8 @@ if ($_GET['doc'] == "document"){
 else if ($_GET['doc'] == "classbook") {
 	$file = $_GET['f'];
 	$f = explode("_", $file);
-	$document = new ClassbookDocument($file.".pdf", $_SESSION['__current_year__'], $f[2]);
+	$school_order = $_GET['sc'];
+	$document = new ClassbookDocument($file.".pdf", $_SESSION['__current_year__'], $f[2], $school_order);
 	try{
 		$document->download();
 	} catch (MYSQLException $ex){

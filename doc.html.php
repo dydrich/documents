@@ -86,14 +86,10 @@
 			background_process("Attendere il caricamento del file", vara, false);
 		};
 
-		var loaded = function(r){
-			clearTimeout(bckg_timer);
-			$('#background_msg').text("Operazione conclusa");
+		var loading_done = function(r){
 			$('#del_upl').show();
 			$('#server_file').val(r);
-			setTimeout(function() {
-				$('#background_msg').dialog("close");
-			}, 2000);
+			loaded("Operazione conclusa");
 		};
 
 		var toggle_classes = function(param){

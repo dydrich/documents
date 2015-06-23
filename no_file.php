@@ -40,7 +40,7 @@ $drawer_label = "File non trovato";
 	<div class="welcome">
 		<p id="w_head" style="font-weight: bold">File non trovato</p>
 		<p class="w_text">
-			Il file <span class="attention"><?php if ($_SESSION['__user__']->getUsername() == 'rbachis' || $_SESSION['__user__']->getUsername() == 'admin') echo $_SESSION['no_file']['file'] ?></span> da te richiesto non &egrave; presente nel server.<br /><br />
+			Il file <span class="attention"><?php if ($_SESSION['__user__']->getUsername() == 'rbachis' || $_SESSION['__user__']->getUsername() == 'admin' || isset($_SESSION['__sudoer__'])) echo $_SESSION['no_file']['file'] ?></span> da te richiesto non &egrave; presente nel server.<br /><br />
 			Il problema &egrave; stato segnalato all'amministratore del sito, e sar&agrave; risolto al pi&ugrave; presto.<br /><br />
 			Ti preghiamo di riprovare pi&ugrave; tardi e di scusare il disagio.
 	 	</p>
