@@ -83,9 +83,20 @@ switch ($_POST['doc_type']){
 		$id = $_POST['id'];
 		$data = array("id" => $id, "destinatario" => $target, "file" => $file, "data_invio" => null, "data_download" => null);
 		$doc = new RBFile($data, new MySQLDataLoader($db));
-		$doc->save();
-		$response['status'] = "ok";
+		try {
+			$doc->save();
+			$response['status'] = "ok";
+		} catch (MySQLException $ex) {
+			$response['status'] = "kosql";
+			$response['dbg_message'] = "Query: {$ex->getQuery()} ------ Errore: {$ex->getMessage()}";
+			$response['message'] = "Si è verificato un errore di rete: controlla lo stato della tua connessione e riprova";
+			$res = json_encode($response);
+			echo $res;
+			exit;
+		}
 		$response['message'] = "Il file è stato inviato al destinatario";
+		$res = json_encode($response);
+		echo $res;
 		exit;
 		break;
 	default:
