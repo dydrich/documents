@@ -125,7 +125,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 				print("<script>parent.timeout = 0; window.setTimeout('parent._alert(\"There was an error uploading the file, please try again!\")', 100); </script>");
 				break;
 			default:
-				echo "<script>parent.loaded('File caricato'); var cont = parent.document.getElementById('att_container');var np = document.createElement('p');np.setAttribute('id', 'att_{$ret}');var _a = document.createElement('a'); _a.setAttribute('href', '#');_a.setAttribute('onclick', 'show_menu(event, {$ret}, \"{$file}\")');_a.style.textDecoration='none';_a.appendChild(document.createTextNode('{$file_name}'));np.appendChild(_a);cont.appendChild(np);</script>";
+				echo "<script>parent.loading_done('File caricato'); var cont = parent.document.getElementById('att_container');var np = document.createElement('p');np.setAttribute('id', 'att_{$ret}');var _a = document.createElement('a'); _a.setAttribute('href', '#');_a.setAttribute('onclick', 'show_menu(event, {$ret}, \"{$file}\")');_a.style.textDecoration='none';_a.appendChild(document.createTextNode('{$file_name}'));np.appendChild(_a);cont.appendChild(np);</script>";
 				break;
 		}	
 	}
