@@ -77,6 +77,7 @@ class RecordGradesDocument extends Document{
 		$this->createRecordBookZip();
 		$this->setFile($file);
 		$this->downloadFile();
+		$this->deleteFile();
 	}
 	
 	private function createRecordBookZip(){
@@ -91,9 +92,11 @@ class RecordGradesDocument extends Document{
 			exit("cannot open <$filename>\n");
 		}
 		$zip->addFile($this->getFile());
-		foreach ($attach as $att){
-			$att = preg_replace("/ /", "_", $att);
-			$zip->addFile($att);
+		if (isset($attach) && $attach && $attach != null && count($attach) > 0) {
+			foreach ($attach as $att){
+				$att = preg_replace("/ /", "_", $att);
+				$zip->addFile($att);
+			}
 		}
 		$zip->close();
 		chdir($old_dir);
