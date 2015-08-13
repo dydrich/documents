@@ -86,8 +86,8 @@
 				        </div>
 				        <div class="card_varcontent" style="overflow: hidden">
 					        <div class="card_row">
-						        <?php if ($_REQUEST['tipo'] == 4): ?>Tipo documento<?php elseif ($_REQUEST['tipo'] == 7): ?>Progressivo<?php else : ?>Data upload<?php endif; ?>
-						        : <?php if ($_REQUEST['tipo'] == 4) {
+						        <?php if ($_REQUEST['tipo'] == 4): ?>Tipo documento<?php elseif ($_REQUEST['tipo'] == 7): ?>Progressivo<?php else : ?>Data upload<?php endif; ?>:
+						        <?php if ($_REQUEST['tipo'] == 4) {
 							        echo $row['categ'];
 						        }
 						        else {
