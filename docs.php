@@ -19,6 +19,9 @@ $limit = 10;
 if ($_REQUEST['tipo'] == 4){
 	$sel_docs = "SELECT rb_documents.*, rb_anni.descrizione, rb_categorie_docs.nome AS categ FROM rb_documents, rb_document_types, rb_anni, rb_categorie_docs WHERE rb_documents.categoria = rb_categorie_docs.id_categoria AND rb_documents.doc_type = rb_document_types.id AND rb_document_types.id = 4 AND rb_anni.id_anno = rb_documents.anno_scolastico AND owner = ".$_SESSION['__user__']->getUid()." ORDER BY anno_scolastico DESC, data_upload DESC ";
 }
+else if ($_REQUEST['tipo'] == 10) {
+	$sel_docs = "SELECT rb_documents.*, rb_anni.descrizione, progressivo_atto FROM rb_documents, rb_document_types, rb_anni WHERE doc_type = rb_document_types.id AND rb_document_types.id = ".$_REQUEST['tipo']." AND rb_anni.id_anno = anno_scolastico AND owner = {$_SESSION['__user__']->getUId()} AND anno_scolastico = {$_SESSION['__current_year__']->get_ID()} ORDER BY data_upload DESC ";
+}
 else {
 	$sel_docs = "SELECT rb_documents.*, rb_anni.descrizione, progressivo_atto FROM rb_documents, rb_document_types, rb_anni WHERE doc_type = rb_document_types.id AND rb_document_types.id = ".$_REQUEST['tipo']." AND rb_anni.id_anno = anno_scolastico AND owner = {$_SESSION['__user__']->getUId()} ORDER BY anno_scolastico DESC, data_upload DESC ";
 }

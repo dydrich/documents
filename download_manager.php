@@ -12,6 +12,7 @@ require_once "lib/Report.php";
 require_once "lib/RBFile.php";
 require_once "lib/CircularAttachment.php";
 require_once "lib/DocumentBean.php";
+require_once "lib/TeachingDocument.php";
 
 ini_set("display_errors", "1");
 
@@ -23,7 +24,7 @@ $_SESSION['__modules__']['docs']['home'] = $module['home'];
 $_SESSION['__modules__']['docs']['lib_home'] = $module['lib_home'];
 $_SESSION['__modules__']['docs']['front_page'] = $module['front_page'];
 $_SESSION['__modules__']['docs']['path_to_root'] = $module['path_to_root'];
-if ($_REQUEST['area']){
+if (isset($_REQUEST['area'])){
 	$_SESSION['__mod_area__'] = $_REQUEST['area'];
 }
 
@@ -40,6 +41,9 @@ if ($_GET['doc'] == "document"){
 			break;
 		case 7:
 			$document = new AlboDocument($_GET['id'], $doc, new MYSQLDataLoader($db));
+			break;
+		case 10:
+			$document = new \eschool\TeachingDocument($_GET['id'], $doc, null, null, new MYSQLDataLoader($db), null);
 			break;
 		default:
 			$document = new Document($_GET['id'], $doc, new MYSQLDataLoader($db));

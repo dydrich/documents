@@ -80,7 +80,233 @@
 		        }
 		    });
 			<?php endif; ?>
+			var count_subjects = 0;
+			var count_classes = 0;
+			<?php if ($tipo == 10): ?>
+			$('#cls_bs').buttonset();
+			$('#subj_bs').buttonset();
+			<?php if ($_SESSION['__user__']->getSubject() == 27 || $_SESSION['__user__']->getSubject() == 41): ?>
+			$('#std_bs').buttonset();
+			$('#cls_bs').on('click', function(e) {
+				e.preventDefault();
+			});
+			$('input.upd_students').on('click', function(event) {
+				var idclass = $(this).attr('data-cls');
+				$.each($('input.upd_classes[type=checkbox]'), function(idx, value) {
+					if ($(this).attr('id') == "cl"+idclass) {
+						$(this).prop('checked', true).button('refresh');
+					}
+					else {
+						$(this).prop('checked', false).button('refresh');
+					}
+
+				});
+				manage_file(10);
+				create_fields(10);
+			});
+			<?php endif; ?>
+			$('#tipo_documento').change(function(event) {
+				if ($(this).val() != 0) {
+					if ($(this).val() > 6) {
+						$('#students_row').show(400);
+					}
+					else {
+						$('#students_row').hide(400);
+					}
+				}
+
+				<?php if (count($subjects) == 1): ?>
+				$('#subj_bs').on('click', function(e) {
+					e.preventDefault();
+				});
+				<?php endif; ?>
+				create_fields(10);
+			});
+			$('input[type=checkbox]').change(function(event) {
+				create_fields(10);
+				manage_file(10);
+			});
+			<?php endif; ?>
+			<?php if ($tipo == 11): ?>
+			$('#tipo_documento').on('change', function(event) {
+				if ($(this).val() > 4 && $('#classe').val() > 0) {
+					load_students($('#classe').val());
+					$('#students_row').show(400);
+				}
+				else {
+					$('#students_row').hide(400);
+				}
+				create_fields(11);
+				manage_file(11);
+			});
+			$('#classe').on('change', function(event) {
+				if ($('#tipo_documento').val() > 4) {
+					load_students($(this).val());
+					$('#students_row').show(400);
+				}
+				else {
+					$('#students_row').hide(400);
+				}
+				create_fields(11);
+				manage_file(11);
+			});
+			$('#student').on('change', function(event){
+				create_fields(11);
+			});
+			<?php endif; ?>
 		});
+
+		var create_fields = function(_type) {
+			if ($('#tipo_documento').val() < 2) {
+				$('#titolo').val("");
+				$('#abstract').val("");
+				return false;
+			}
+			var title = $('#tipo_documento').children(":selected").text();
+			var abstract = "Tipo documento: "+$('#tipo_documento').children(":selected").text().toLowerCase();
+			abstract += ".\n";
+
+			if (_type == 10) {
+				if ($('#tipo_documento').val() < 7) {
+					// check subjects
+					var sbj = $('input.upd_subjects:checked').length;
+					if (sbj > 0) {
+						var label_sbj = [];
+						$.each($('input.upd_subjects:checked'), function (idx, val) {
+							label_sbj.push($('label[for="' + $(this).attr("id") + '"]').text());
+						});
+						if (sbj == 1) {
+							title += " di " + label_sbj[0];
+							abstract += "Materia: " + label_sbj[0] + ".\n";
+						}
+						else {
+							var p = label_sbj.join(", ");
+							idx = p.lastIndexOf(",");
+							before = p.substring(0, idx);
+							after = p.substring(idx + 1);
+							title += " di " + before + " e" + after;
+							abstract += "Materie: " + before + " e" + after + ".\n";
+						}
+					}
+				}
+				else if ($('#tipo_documento').val() > 6) {
+					// check students
+					var count_std = $('input.upd_students:checked').length;
+					if (count_std > 0) {
+						var label_std = [];
+						$.each($('input.upd_students:checked'), function (idx, val) {
+							label_std.push($('label[for="' + $(this).attr("id") + '"]').text());
+						});
+						if (count_std == 1) {
+							title += " dell'alunno " + label_std[0];
+							abstract += "Alunno: " + label_std[0] + ".\n";
+						}
+						else {
+							var p = label_std.join(", ");
+							idx = p.lastIndexOf(",");
+							before = p.substring(0, idx);
+							after = p.substring(idx + 1);
+							title += " degli alunni " + before + " e" + after;
+							abstract += "Alunni: " + before + " e" + after + ".\n";
+						}
+					}
+				}
+
+				// check classes
+				var cls = $('input.upd_classes:checked').length;
+				if (cls > 0) {
+					var label_cls = [];
+					$.each($('input.upd_classes:checked'), function (idx, val) {
+						label_cls.push($('label[for="' + $(this).attr("id") + '"]').text());
+					});
+					if (cls == 1) {
+						if (_type == 10) {
+							title += " - classe " + label_cls[0];
+							abstract += "Classe: " + label_cls[0];
+						}
+						else {
+							title += " " + label_cls[0];
+							abstract += "Classe: " + label_cls[0];
+						}
+					}
+					else {
+						title += " - classi " + label_cls.join(", ");
+						abstract += "Classi: " + label_cls.join(", ");
+					}
+				}
+			}
+			else {
+				if ($('#tipo_documento').val() > 4 && $('#student').val()) {
+					var label_st = $('#student').children(":selected").text();
+					title += " dell'alunno " + label_st;
+					abstract += "Alunno: " + label_st + ".\n";
+				}
+				var label_cls = $('#classe').children(":selected").text();
+				title += " " + label_cls;
+				abstract += "Classe: " + label_cls;
+			}
+
+			$('#titolo').val(title);
+			$('#abstract').val(abstract);
+		};
+
+		var manage_file = function(_tipo) {
+			var cls;
+			var t_d = $('#tipo_documento').val();
+			if (_tipo == 10) {
+				cls = $('input.upd_classes:checked').length;
+				var sbj = $('input.upd_subjects:checked').length;
+			}
+			else {
+				cls = $('#classe').val();
+			}
+			if (cls < 1 || t_d == 0) {
+				$('#if_container').hide(400);
+			}
+			else {
+				$('#if_container').show(400);
+			}
+		};
+
+		var load_students = function(cls) {
+			var url = "../../shared/get_students.php";
+
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: {classe: cls},
+				dataType: 'json',
+				error: function() {
+					j_alert("error", "Si è verificato un errore di rete: controlla lo stato della tua connessione e riprova");
+					return false;
+				},
+				succes: function() {
+
+				},
+				complete: function(data){
+					r = data.responseText;
+					if(r == "null"){
+						return false;
+					}
+					var json = $.parseJSON(r);
+					if (json.status == "kosql"){
+						j_alert("error", json.message);
+						console.log(json.dbg_message);
+					}
+					else if (json.status == "ko") {
+						j_alert("error", json.message);
+						console.log(json.dbg_message);
+					}
+					else {
+						$('#student').empty();
+						$('#student').append($("<option value='0'>.</option>"));
+						json.data.forEach(function(obj) {
+							$('#student').append($("<option value='"+obj.id+"'>"+obj.name+"</option>" ));
+						});
+					}
+				}
+			});
+		};
 
 		var loading = function(vara){
 			background_process("Attendere il caricamento del file", vara, false);
@@ -89,7 +315,7 @@
 		var loading_done = function(r){
 			$('#del_upl').show();
 			$('#server_file').val(r);
-			loaded("Operazione conclusa");
+			loaded("Il file è stato caricato");
 		};
 
 		var toggle_classes = function(param){
@@ -180,6 +406,72 @@
 		            $('#r_scad').removeClass("has_error");
 		        }
 		    }
+			if (tipo == 10) {
+				var doc_t = $('#tipo_documento').val();
+				if (doc_t < 1) {
+					idx++;
+					msg += idx+". È obbligatorio indicare il tipo di documento\n";
+					go_ahead = false;
+					$('#r_tipo').addClass("has_error");
+				}
+				else {
+					$('#r_tipo').removeClass("has_error");
+				}
+				count_subjects = $('input.upd_subjects:checked').length;
+				count_classes = $('input.upd_classes:checked').length;
+				if (doc_t < 7 && doc_t > 0) {
+					// need one or more classes and at least a subject
+					if (count_subjects < 1) {
+						idx++;
+						msg += idx+". È obbligatorio indicare almeno una materia\n";
+						go_ahead = false;
+						$('#subject_row').addClass("has_error");
+					}
+					else {
+						$('#subject_row').removeClass("has_error");
+					}
+				}
+				if (count_classes < 1) {
+					idx++;
+					msg += idx+". È obbligatorio indicare almeno una classe\n";
+					go_ahead = false;
+					$('#classes_row').addClass("has_error");
+				}
+				else {
+					$('#classes_row').removeClass("has_error");
+				}
+			}
+			if (tipo == 11) {
+				var doc_t = $('#tipo_documento').val();
+				if (doc_t < 1) {
+					idx++;
+					msg += idx+". È obbligatorio indicare il tipo di documento\n";
+					go_ahead = false;
+					$('#r_tipo').addClass("has_error");
+				}
+				else {
+					$('#r_tipo').removeClass("has_error");
+				}
+				if($('#description').val() == ""){
+					idx++;
+					msg += idx+". La descrizione è obbligatoria\n";
+					go_ahead = false;
+					$('#r_cat').addClass("has_error");
+				}
+				else {
+					$('#r_cat').removeClass("has_error");
+				}
+
+				if ($('#classe').val() < 1) {
+					idx++;
+					msg += idx+". È obbligatorio indicare almeno una classe\n";
+					go_ahead = false;
+					$('#classes_row').addClass("has_error");
+				}
+				else {
+					$('#classes_row').removeClass("has_error");
+				}
+			}
 			if (!go_ahead){
 				alert(msg);
 				return false;
@@ -194,6 +486,7 @@
 				dataType: 'json',
 				error: function() {
 					j_alert("error", "Si è verificato un errore di rete: controlla lo stato della tua connessione e riprova");
+					return false;
 				},
 				succes: function() {
 
@@ -205,6 +498,10 @@
 					}
 					var json = $.parseJSON(r);
 					if (json.status == "kosql"){
+						j_alert("error", json.message);
+						console.log(json.dbg_message);
+					}
+					else if (json.status == "ko") {
 						j_alert("error", json.message);
 						console.log(json.dbg_message);
 					}
@@ -275,7 +572,13 @@
 		};
 
 		var reload_iframe = function(){
+			<?php if ($tipo == 10) { ?>
+			$('#aframe').attr('src', 'upload_manager.php?upl_type=teaching_doc&area=teachers&tipo=<?php echo $tipo ?>');
+			<?php } else if ($tipo == 11) { ?>
+			$('#aframe').attr('src', 'upload_manager.php?upl_type=document_cdc&area=teachers&tipo=<?php echo $tipo ?>');
+			<?php } else { ?>
 			$('#aframe').attr('src', 'upload_manager.php?upl_type=document&area=teachers&tipo=<?php echo $tipo ?>');
+			<?php } ?>
 		};
 
 		tid = <?php if (isset($tags)) echo count($tags); else echo "0" ?>;
@@ -330,7 +633,7 @@
 		</a>
 	</div>
 <?php 
-if ($tipo == 4 || $tipo == 7){
+if ($tipo == 4 || $tipo == 7 || $tipo == 10 || $tipo == 11){
 	include "content{$tipo}.php";
 }
 else {

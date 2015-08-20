@@ -20,13 +20,13 @@ while($type = $res_types->fetch_assoc()){
 	<ul class="menublock" style="" dir="rtl">
 		<?php 
 		while(list($k, $v) = each($types)){
-			if ($k != 4 && !$_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|APS_PERM|AIS_PERM|AMS_PERM)):
+			if (($k != 4 && $k != 10 && $k != 11) && !$_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|APS_PERM|AIS_PERM|AMS_PERM)):
 				continue;
 			endif;
 			if ($k == 7):
 				continue;
 			endif;
-			if ($k == 4 && !$_SESSION['__user__']->check_perms(APS_PERM|AIS_PERM|AMS_PERM|DOC_PERM)):
+			if (($k == 4 || $k == 10 || $k == 11)  && (!$_SESSION['__user__']->check_perms(DOC_PERM))):
 				continue;
 			endif;
 		?>
@@ -45,11 +45,13 @@ while($type = $res_types->fetch_assoc()){
 			if ($k != 4 && $_SESSION['__user__']->check_perms(STD_PERM)):
 				continue;
 			endif;
+			if (($k == 10 || $k == 11)  && (!$_SESSION['__user__']->check_perms(DIR_PERM) || $_SESSION['__role__'] != "Dirigente scolastico")):
+				continue;
+			endif;
 			
 		?>
 		<li><a href="documents.php?tipo=<?php echo $k ?>"><?php echo $v ?></a></li>
 		<?php
-			
 		} 
 		?>
 		<?php if ($_SESSION['__user__']->check_perms(STD_PERM)): ?>

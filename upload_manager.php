@@ -36,7 +36,7 @@ if (isset($_REQUEST['docID']) && $_REQUEST['docID'] != 0) {
 <body style="background-color: #FFF">
 <form action="upload_manager.php?action=upload&upl_type=<?php echo $_REQUEST['upl_type'] ?>&tipo=<?php echo $_GET['tipo'] ?>" method="post" enctype="multipart/form-data" id="doc_form">
 <div style="height: 25px; display: block" id="_div">
-<?php if ($_REQUEST['upl_type'] == "document" && isset($_REQUEST['action'])){ ?>
+<?php if (($_REQUEST['upl_type'] == "document" || $_REQUEST['upl_type'] == "teaching_doc" || $_REQUEST['upl_type'] == "document_cdc") && isset($_REQUEST['action'])){ ?>
 <fieldset style="padding-left: 2px">
 	<legend>File</legend>
 <span style="font-weight: normal" id="_span"></span>
@@ -70,12 +70,16 @@ if ($_SESSION['__user__']->getSchoolOrder() != ""){
 
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 	switch ($_GET['upl_type']){
+		case "document":
+		case "document_cdc":
+			$type = $_GET['tipo'];
+			$path = "download/{$type}/";
+			break;
 		case "teacherbook_att":
 			$path = "download/registri/{$_SESSION['__current_year__']->get_descrizione()}/{$school_order_directory}/docenti/{$user_directory}/";
 			break;
-		case "document":
-			$type = $_GET['tipo'];
-			$path = "download/{$type}/";
+		case "teaching_doc":
+			$path = "download/registri/{$_SESSION['__current_year__']->get_descrizione()}/{$school_order_directory}/docenti/{$user_directory}/";
 			break;
 	}
 	
@@ -94,14 +98,22 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 	$ret = $upload_manager->upload();
 	$fs = 00;
 	$dati_file = MimeType::getMimeContentType($file);
-	if (file_exists("../../{$path}{$file}")){
-		$fs = filesize("../../{$path}{$file}");
+	if ($_GET['upl_type'] == "teaching_doc") {
+		if (file_exists($file)) {
+			$fs = filesize($file);
+		}
 	}
+	else {
+		if (file_exists("../../{$path}{$file}")) {
+			$fs = filesize("../../{$path}{$file}");
+		}
+	}
+
 	$dati_file['size'] = formatBytes($fs, 2);
 	$dati_file['encoded_name'] = $file;
 	$json = json_encode($dati_file);
-	$html = addslashes("$file_name<br />Tipo: {$dati_file['tipo']}<br />Size: {$dati_file['size']}");
-	if ($_GET['upl_type'] == "document") {
+	$html = "$file_name<br />Tipo: {$dati_file['tipo']}<br />Size: {$dati_file['size']}";
+	if ($_GET['upl_type'] == "document" || $_GET['upl_type'] == "teaching_doc" || $_GET['upl_type'] == "document_cdc") {
 		switch ($ret){
 			case UploadManager::FILE_EXISTS:
 				print("<script>parent.j_alert('error', 'File presente in archivio'); parent.reload_iframe();</script>");

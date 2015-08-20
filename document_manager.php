@@ -12,6 +12,8 @@ require_once "lib/DidacticDocument.php";
 require_once "lib/AlboDocument.php";
 require_once "lib/RecordGradesAttach.php";
 require_once "lib/RBFile.php";
+require_once "lib/TeachingDocument.php";
+require_once "lib/ClassCommitteeDocument.php";
 
 $sel_module = "SELECT * FROM rb_modules WHERE code_name = 'docs'";
 $res_module = $db->execute($sel_module);
@@ -32,8 +34,24 @@ header("Content-type: application/json");
 
 if ($_POST['action'] == 4){
 	$f = $_POST['server_file'];
-	if ($_POST['doc_type'] == "document"){
+	if ($_POST['doc_type'] == "document" || $_POST['doc_type'] == "document_cdc"){
 		$fp = "../../download/{$_POST['tipo']}/{$f}";
+	}
+	else if ($_POST['doc_type'] == "teaching_doc" || $_POST['tipo'] == 10) {
+		if ($_SESSION['__user__']->getSchoolOrder() != ""){
+			$ordine_scuola = $_SESSION['__user__']->getSchoolOrder();
+			$school_year = $_SESSION['__school_year__'][$ordine_scuola];
+			$fine_q = format_date($school_year->getFirstSessionEndDate(), IT_DATE_STYLE, SQL_DATE_STYLE, "-");
+			$school_order_directory = "scuola_media";
+			if ($ordine_scuola == 2){
+				$school_order_directory = "scuola_primaria";
+			}
+
+			$user_directory = $_SESSION['__user__']->getFullName();
+			$user_directory = preg_replace("/ /", "_", $user_directory);
+			$user_directory = strtolower($user_directory);
+		}
+		$fp = "../../download/registri/{$_SESSION['__current_year__']->get_descrizione()}/{$school_order_directory}/docenti/{$user_directory}/{$f}";
 	}
 	if (file_exists($fp)){
 		unlink($fp);
@@ -53,6 +71,8 @@ if ($_POST['action'] == 4){
 
 switch ($_POST['doc_type']){
 	case "document":
+	case "document_cdc":
+	case "teaching_doc":
 		if ($_POST['tipo'] == 4){
 			if (!isset($_POST['classi'])){
 				$_POST['classi'] = array();
@@ -64,6 +84,25 @@ switch ($_POST['doc_type']){
 			$data = array("anno_scolastico" => $_POST['anno'], "owner" => $_SESSION['__user__']->getUid(), "titolo" => $db->real_escape_string($_POST['titolo']), "doc_type" => $_POST['tipo'], "abstract" => $db->real_escape_string($_POST['abstract']), "file" => $_POST['server_file'], "data_upload" => date("Y-m-d H:i:s"), "categoria" => $_POST['categoria'], "scadenza" => $_POST['scadenza'], "numero_atto" => $_POST['act'], "progressivo_atto" => $_POST['progressivo_atto'],  "protocollo" => $db->real_escape_string($_POST['protocol']), "evidenziato" => format_date($_POST['highlighted'], IT_DATE_STYLE, SQL_DATE_STYLE, "-"));
 			$doc = new AlboDocument($_POST['_i'], $data, new MYSQLDataLoader($db));
 		}
+		else if ($_POST['tipo'] == 10){
+			$data = array("anno_scolastico" => $_POST['anno'], "owner" => $_SESSION['__user__']->getUid(), "titolo" => $db->real_escape_string($_POST['titolo']), "doc_type" => $_POST['tipo'], "abstract" => $db->real_escape_string($_POST['abstract']), "file" => $_POST['server_file'], "data_upload" => date("Y-m-d H:i:s"), "categoria" => $_POST['tipo_documento']);
+			$alunno = null;
+			if (isset($_POST['alunni'])) {
+				$alunno = $_POST['alunni'][0];
+			}
+			$doc = new \eschool\TeachingDocument($_POST['_i'], $data, $_POST['classi'], $_POST['materie'], new MYSQLDataLoader($db), $alunno);
+		}
+		else if ($_POST['tipo'] == 11){
+			$data = array("anno_scolastico" => $_POST['anno'], "owner" => $_SESSION['__user__']->getUid(), "titolo" => $db->real_escape_string($_POST['titolo']), "doc_type" => $_POST['tipo'], "abstract" => $db->real_escape_string($_POST['abstract']), "file" => $_POST['server_file'], "data_upload" => date("Y-m-d H:i:s"), "categoria" => $_POST['tipo_documento']);
+			$alunno = null;
+			if (isset($_POST['student'])) {
+				$alunno = $_POST['student'];
+				if ($alunno == 0 || $alunno == "") {
+					$alunno = null;
+				}
+			}
+			$doc = new \eschool\ClassCommitteeDocument($_POST['_i'], $data, $_POST['classe'],new MYSQLDataLoader($db), $alunno);
+		}
 		else {
 			$data = array("anno_scolastico" => $_POST['anno'], "owner" => $_SESSION['__user__']->getUid(), "titolo" => $db->real_escape_string($_POST['titolo']), "doc_type" => $_POST['tipo'], "abstract" => $db->real_escape_string($_POST['abstract']), "file" => $_POST['server_file'], "data_upload" => date("Y-m-d H:i:s"), "evidenziato" => format_date($_POST['highlighted'], IT_DATE_STYLE, SQL_DATE_STYLE, "-"), "tags" => $_POST['tags']);
 			$doc = new Document($_POST['_i'], $data, new MYSQLDataLoader($db));
@@ -74,7 +113,10 @@ switch ($_POST['doc_type']){
 		$cls = $_POST['cls'];
 		$sub = $_POST['sub'];
 		$id = $_POST['id'];
-		$doc = new RecordGradesAttach($file, $_SESSION['__current_year__'], $cls, $_SESSION['__user__'], $sub, new MySQLDataLoader($db));
+		$registro = $_POST['registro'];
+		$delete_file = $_POST['delete_file'];
+		$id_documento = $_POST['id_doc'];
+		$doc = new RecordGradesAttach($file, $_SESSION['__current_year__'], $cls, $_SESSION['__user__'], $sub, new MySQLDataLoader($db), $id_documento);
 		$doc->setID($id);
 		break;
 	case "file":
@@ -120,7 +162,12 @@ try{
 			$response['message'] = "Il documento è stato modificato";
 			break;
 		case DELETE_OBJECT:
-			$doc->delete();
+			if ($doc instanceof RecordGradesAttach && $doc->getDocumentID() != 0) {
+				$doc->deleteAttach();
+			}
+			else {
+				$doc->delete();
+			}
 			$response['message'] = "Il documento è stato cancellato";
 			break;
 	}

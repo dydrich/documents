@@ -6,11 +6,17 @@ require_once '../../lib/EventLogFactory.php';
 require_once "lib/DidacticDocument.php";
 require_once "lib/Document.php";
 require_once "lib/AlboDocument.php";
+require_once "lib/TeachingDocument.php";
+require_once "lib/ClassCommitteeDocument.php";
+require_once "../../lib/ArrayMultiSort.php";
+require_once "../../lib/RBUtilities.php";
 
 ini_set("display_errors", DISPLAY_ERRORS);
 
 check_session();
 check_permission(DIR_PERM|DSG_PERM|SEG_PERM|DOC_PERM);
+
+$_SESSION['__path_to_root__'] = "../../";
 
 // per la paginazione del REFERER
 if (isset($_SERVER['HTTP_REFERER'])){
@@ -82,6 +88,40 @@ else if ($tipo == 7){
 	$res_categorie = $db->executeQuery($sel_categorie);
 	
 	$document = new AlboDocument($_REQUEST['_i'], $current_doc, new MySQLDataLoader($db));
+}
+else if ($tipo == 10) {
+	$sel_tipologie = "SELECT * FROM rb_tipologie_relazione_docente ORDER BY id";
+	$res_tipologie = $db->executeQuery($sel_tipologie);
+	$classi = $_SESSION['__user__']->getClasses();
+	$msarray = new ArrayMultiSort($classi);
+	$msarray->setSortFields(array("classe"));
+	$msarray->sort();
+	$classi = $msarray->getData();
+
+	if ($_SESSION['__user__']->getSubject() == 27 || $_SESSION['__user__']->getSubject() == 41) {
+		$sel_sts = "SELECT nome, cognome, id_alunno, id_classe FROM rb_alunni, rb_assegnazione_sostegno WHERE alunno = id_alunno AND anno = {$_SESSION['__current_year__']->get_ID()} AND docente = {$_SESSION['__user__']->getUid()}";
+		$res_sts = $db->executeQuery($sel_sts);
+	}
+
+	$rb = RBUtilities::getInstance($db);
+	$subjects = $rb->getSubjectsOfTeacher($_SESSION['__user__']);
+
+	if ($_i != 0) {
+		$document = new \eschool\TeachingDocument($_i, $current_doc, null, null, new MYSQLDataLoader($db), null);
+	}
+}
+else if ($tipo == 11) {
+	$sel_tipologie = "SELECT * FROM rb_tipologie_documento_cdc ORDER BY id";
+	$res_tipologie = $db->executeQuery($sel_tipologie);
+	$classi = $_SESSION['__user__']->getClasses();
+	$msarray = new ArrayMultiSort($classi);
+	$msarray->setSortFields(array("classe"));
+	$msarray->sort();
+	$classi = $msarray->getData();
+
+	if ($_i != 0) {
+		$document = new \eschool\ClassCommitteeDocument($_i, $current_doc, null, new MYSQLDataLoader($db), null);
+	}
 }
 else {
 	$document = new Document($_REQUEST['_i'], $current_doc, new MySQLDataLoader($db));
