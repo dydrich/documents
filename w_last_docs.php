@@ -7,7 +7,7 @@
     */
     $number_docs = 4;
     if(!isset($d_type)){
-    	$sel_last_docs = "SELECT id, data_upload AS data, file, doc_type, abstract, titolo, link, '' AS anno, '' AS classe, CONCAT_WS(' ', cognome, nome) AS owner, privato, rb_documents.permessi FROM rb_documents, rb_utenti WHERE owner = uid AND doc_type <> 7 AND doc_type <> 1 AND privato <> 1 ORDER BY data DESC LIMIT $number_docs";
+    	$sel_last_docs = "SELECT id, data_upload AS data, file, doc_type, abstract, titolo, link, '' AS anno, '' AS classe, CONCAT_WS(' ', cognome, nome) AS owner, privato, rb_documents.permessi FROM rb_documents, rb_utenti WHERE owner = uid AND ((doc_type BETWEEN 1 AND 6) || (doc_type = 9)) AND privato <> 1 ORDER BY data DESC LIMIT $number_docs";
     }
     else{
     	$sel_last_docs = "SELECT id, data_upload AS data, file, doc_type, abstract, titolo, link, '' AS anno, '' AS classe, CONCAT_WS(' ', cognome, nome) AS owner, privato, rb_documents.permessi FROM rb_documents, rb_utenti WHERE owner = uid AND doc_type = $d_type AND privato <> 1 ORDER BY data DESC LIMIT $number_docs";

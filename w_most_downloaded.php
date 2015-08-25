@@ -6,7 +6,7 @@
      * estrazione documenti
     */
     $number_docs = 4;
-    $sel_docs_dw = "SELECT rb_documents.id, file, rb_documents.doc_type, abstract, titolo, link, COUNT(rb_downloads.id) AS counter, privato, permessi FROM rb_documents, rb_downloads WHERE doc_id = rb_documents.id AND rb_documents.doc_type != 7 AND data_dw > DATE_SUB(NOW(), INTERVAL 30 DAY) GROUP BY rb_documents.id, file, rb_documents.doc_type, abstract, titolo, link ORDER BY counter DESC LIMIT $number_docs";
+    $sel_docs_dw = "SELECT rb_documents.id, file, rb_documents.doc_type, abstract, titolo, link, COUNT(rb_downloads.id) AS counter, privato, permessi FROM rb_documents, rb_downloads WHERE doc_id = rb_documents.id AND ((rb_documents.doc_type BETWEEN 1 AND 6) || (rb_documents.doc_type = 9)) AND data_dw > DATE_SUB(NOW(), INTERVAL 30 DAY) GROUP BY rb_documents.id, file, rb_documents.doc_type, abstract, titolo, link ORDER BY counter DESC LIMIT $number_docs";
 	$res_last_dw = $db->execute($sel_docs_dw);
 	if($res_last_dw->num_rows == 0){
 	?>
