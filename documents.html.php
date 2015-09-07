@@ -4,6 +4,7 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title><?php print $_SESSION['__config__']['intestazione_scuola'] ?>: documenti</title>
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="../../font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/reg.css" type="text/css" media="screen,projection" />
 	<link rel="stylesheet" href="../../css/general.css" type="text/css" media="screen,projection" />
 	<link rel="stylesheet" href="../../css/site_themes/<?php echo getTheme() ?>/documents.css" type="text/css" media="screen,projection" />
@@ -18,6 +19,23 @@
 		    $( "#accordion" ).accordion({
 		      heightStyle: "content"
 		    });
+
+			$('#top_btn').click(function() {
+				$('html,body').animate({
+					scrollTop: 0
+				}, 700);
+				return false;
+			});
+
+			var amountScrolled = 200;
+
+			$(window).scroll(function() {
+				if ($(window).scrollTop() > amountScrolled) {
+					$('#top_btn').fadeIn('slow');
+				} else {
+					$('#top_btn').fadeOut('slow');
+				}
+			});
 		  });
 
 		function show_div(div){
@@ -126,7 +144,7 @@ else{
 ?>
 	<p class="doc">
 		<a href="document.php?id=<?php print $doc['id'] ?>">
-			<span style="font-weight: bold"><?php echo truncateString(stripslashes($first_row), 120) ?></span>
+			<span style="font-weight: bold"><?php if ($doc['doc_type'] != 7) echo truncateString(stripslashes($first_row), 120); else echo truncateString(stripslashes($first_row), 180) ?></span>
 			<span style="font-weight: normal"><?php echo truncateString(stripslashes($second_row), 120) ?></span>
 		</a>
 	</p>
@@ -159,5 +177,8 @@ if($res_docs->num_rows > 0){
 	<?php endif; ?>
 	<div class="drawer_lastlink"><a href="<?php echo $_SESSION['__modules__']['docs']['path_to_root'] ?>shared/do_logout.php"><img src="../../images/51.png" style="margin-right: 10px; position: relative; top: 5%" />Logout</a></div>
 </div>
+<a href="#" id="top_btn" class="rb_button float_button top_button">
+	<i class="fa fa-arrow-up"></i>
+</a>
 </body>
 </html>

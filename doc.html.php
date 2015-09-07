@@ -298,8 +298,7 @@
 						console.log(json.dbg_message);
 					}
 					else {
-						$('#student').empty();
-						$('#student').append($("<option value='0'>.</option>"));
+						$('#student').empty().append($("<option value='0'>.</option>"));
 						json.data.forEach(function(obj) {
 							$('#student').append($("<option value='"+obj.id+"'>"+obj.name+"</option>" ));
 						});
@@ -309,7 +308,7 @@
 		};
 
 		var loading = function(vara){
-			background_process("Attendere il caricamento del file", vara, false);
+			background_process("Stiamo caricando il file", vara, false);
 		};
 
 		var loading_done = function(r){
@@ -332,7 +331,7 @@
 			var __tags = _tags.join(",");
 			$('#tags').val(__tags);
 			if(par == 2){
-		        if(!confirm("Sei sicuro di voler cancellare questo documento?"))
+		        if(!confirm("Cancellare il documento?"))
 		            return false;
 		    }
 			$('#_i').val(id);
