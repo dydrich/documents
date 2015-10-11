@@ -116,11 +116,11 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 	if ($_GET['upl_type'] == "document" || $_GET['upl_type'] == "teaching_doc" || $_GET['upl_type'] == "document_cdc") {
 		switch ($ret){
 			case UploadManager::FILE_EXISTS:
-				print("<script>parent.j_alert('error', 'File presente in archivio'); parent.reload_iframe();</script>");
+				print("<script>parent.loaded_with_error('File presente in archivio'); parent.reload_iframe();</script>");
 				break;
 			case UploadManager::UPL_ERROR:
 				//echo "ko|There was an error uploading the file, please try again!|".$_FILES['fname']['name'];
-				print("<script>parent.j_alert('error', 'Errore nella copia del file. Riprovare tra poco'); </script>");
+				print("<script>parent.loaded_with_error('Errore nella copia del file. Riprovare tra poco');$('#_span').html('Errore'); </script>");
 				break;
 			case UploadManager::UPL_OK:
 				print("<script>parent.loading_done('".$file."'); $('#_span').html('$html'); </script>");
