@@ -14,7 +14,7 @@ require_once "lib/CircularAttachment.php";
 require_once "lib/DocumentBean.php";
 require_once "lib/TeachingDocument.php";
 
-ini_set("display_errors", "1");
+ini_set("display_errors", DISPLAY_ERRORS);
 
 $sel_module = "SELECT * FROM rb_modules WHERE code_name = 'docs'";
 $res_module = $db->execute($sel_module);
