@@ -32,6 +32,33 @@ if (isset($_REQUEST['area'])){
 $response = array("status" => "ok");
 header("Content-type: application/json");
 
+if ($_POST['action'] == 99) {
+	// quick delete
+	$f = $_POST['server_file'];
+	$t = $_POST['type'];
+	$id = $_REQUEST['id'];
+	$fp = "download/{$t}/";
+	$doc = new Document($id, null, new MYSQLDataLoader($db));
+	$doc->setFile($f);
+	$doc->setFilePath($fp);
+	$doc->setDocumentType($t);
+	/*
+	if (!$doc->deleteFile()) {
+		$response['status'] = "ko";
+		$response['message'] = "File non trovato";
+		$response['dbg_message'] =
+		$res = json_encode($response);
+		echo $res;
+		exit;
+	}
+	*/
+	$doc->delete();
+	$response['message'] = "Il file è stato cancellato";
+	$res = json_encode($response);
+	echo $res;
+	exit;
+}
+
 if ($_POST['action'] == 4){
 	$f = $_POST['server_file'];
 	if ($_POST['doc_type'] == "document" || $_POST['doc_type'] == "document_cdc"){

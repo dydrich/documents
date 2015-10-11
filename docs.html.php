@@ -16,6 +16,15 @@
 		$(function(){
 			load_jalert();
 			setOverlayEvent();
+			$('.quick_delete').on('click', function(event) {
+				event.preventDefault();
+				var _id = $(this).data('id');
+				var _file = $(this).data('file');
+				if (!confirm("Cancellare il documento?")) {
+					return false;
+				}
+				delete_file(_id, _file);
+			});
 			$('#button').button();
 			$('#button').click(function(){
 				document.location.href = "doc.php?tipo=<?php echo $_REQUEST['tipo'] ?>&_i=0";
@@ -41,6 +50,42 @@
 				}
 			});
 		});
+
+		var delete_file = function(_id, _file) {
+			var url = "document_manager.php";
+
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: {action: 99, id: _id, server_file: _file, type: <?php echo $_REQUEST['tipo'] ?>},
+				dataType: 'json',
+				error: function() {
+					j_alert("error", "Si è verificato un errore di rete: controlla lo stato della tua connessione e riprova");
+					return false;
+				},
+				succes: function() {
+
+				},
+				complete: function(data){
+					r = data.responseText;
+					if(r == "null"){
+						return false;
+					}
+					var json = $.parseJSON(r);
+					if (json.status == "kosql"){
+						j_alert("error", json.message);
+						console.log(json.dbg_message);
+					}
+					else if (json.status == "ko") {
+						j_alert("error", json.message);
+						console.log(json.dbg_message);
+					}
+					else {
+						$('#card'+_id).hide(300);
+					}
+				}
+			});
+		};
 	</script>
 	<style>
 	</style>
@@ -76,38 +121,45 @@
 		        $sel_dw = "SELECT COUNT(id) FROM rb_downloads WHERE doc_id = {$row['id']}";
 		        $dw = $db->executeCount($sel_dw);
 		        ?>
-		        <a href="doc.php?_i=<?php print $row['id'] ?>">
-			        <div class="card">
-				        <div class="card_title">
-					        <?php echo truncateString(stripslashes($row['titolo']), 80) ?>
-					        <div style="float: right; width: 90px; margin-right: 30px" class="normal">
-						        A. S. <?php print $row['descrizione'] ?>
-					        </div>
+		        <div class="card" id="card<?php echo $row['id'] ?>">
+			        <div class="card_title">
+			            <a href="doc.php?_i=<?php print $row['id'] ?>" class="_bold">
+				        <?php echo truncateString(stripslashes($row['titolo']), 80) ?>
+				        </a>
+				    <?php if ($_REQUEST['tipo'] < 10 && $_REQUEST['tipo'] != 7) : ?>
+				        <div style="float: right; width: 30px; margin-right: 10px" class="normal">
+					        <a class="quick_delete" href="#" data-id="<?php echo $row['id'] ?>" data-file="<?php echo $row['file'] ?>">
+					            <i class="fa fa-trash" style="font-size: 1.3em"></i>
+					        </a>
 				        </div>
-				        <div class="card_varcontent" style="overflow: hidden">
-					        <div class="card_row">
-						        <?php if ($_REQUEST['tipo'] == 4): ?>Tipo documento<?php elseif ($_REQUEST['tipo'] == 7): ?>Progressivo<?php else : ?>Data upload<?php endif; ?>:
-						        <?php if ($_REQUEST['tipo'] == 4) {
-							        echo $row['categ'];
+			        <?php endif; ?>
+			        </div>
+			        <div class="card_varcontent" style="overflow: hidden">
+				        <div class="minicard normal">
+					        A. S. <?php print $row['descrizione'] ?>
+				        </div>
+				        <div class="minicard" style="margin-left: 7.5%">
+					        <?php if ($_REQUEST['tipo'] == 4): ?>Tipo documento<?php elseif ($_REQUEST['tipo'] == 7): ?>Progressivo<?php else : ?>Data upload<?php endif; ?>:
+					        <?php if ($_REQUEST['tipo'] == 4) {
+						        echo $row['categ'];
+					        }
+					        else {
+						        if ($_REQUEST['tipo'] == 7) {
+							        echo $row['progressivo_atto'];
 						        }
 						        else {
-							        if ($_REQUEST['tipo'] == 7) {
-								        echo $row['progressivo_atto'];
-							        }
-							        else {
-								        echo format_date($d, SQL_DATE_STYLE, IT_DATE_STYLE, "/") . " " . substr($t, 0, 5);
-							        }
-						        } ?>
-					        </div>
-					        <div class="minicard">
-						        Tipo file: <?php print strtoupper($path_parts['extension']) ?>
-					        </div>
-					        <div class="minicard" style="margin-left: 7.5%">
-						        Download: <?php echo $dw ?>
-					        </div>
+							        echo format_date($d, SQL_DATE_STYLE, IT_DATE_STYLE, "/") . " " . substr($t, 0, 5);
+						        }
+					        } ?>
+				        </div>
+				        <div class="minicard">
+					        Tipo file: <?php print strtoupper($path_parts['extension']) ?>
+				        </div>
+				        <div class="minicard" style="margin-left: 7.5%">
+					        Download: <?php echo $dw ?>
 				        </div>
 			        </div>
-		        </a>
+		        </div>
 	        <?php
 	        }
 		}
