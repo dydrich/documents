@@ -10,6 +10,7 @@
 namespace eschool;
 
 require_once "Document.php";
+require_once "../../lib/MimeType.php";
 require_once "../../lib/RBUtilities.php";
 
 class TeachingDocument extends \Document {
@@ -177,6 +178,22 @@ class TeachingDocument extends \Document {
 			$_SESSION['no_file']['file'] =  $this->getFilePath().$this->file;
 			header("Location: no_file.php");
 		}
+	}
+
+	public function downloadFile(){
+		$mime = \MimeType::getMimeContentType($this->file);
+
+		$ext = pathinfo($this->file, PATHINFO_EXTENSION);
+		$_filename = $this->title.".".$ext;
+
+		$fp = "../../".$this->getFilePath().$this->file;
+		header("Content-Type: ".$mime['ctype']);
+		header('Content-Disposition: attachment; filename="'.$_filename.'"');
+		header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Pragma: public");
+		readfile($fp);
+		//exit;
 	}
 
 	private function saveClassAndSubjectRelations() {
