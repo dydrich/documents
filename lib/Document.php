@@ -21,7 +21,7 @@ class Document{
 	protected $title;	
 	protected $groups = null;
 	protected $protected = false;
-	protected $highlited = null;	
+	protected $highlighted = null;	
 	protected $permission = null;
 	protected $filePath = null;
 	protected $deleteOnDownload = null;
@@ -45,7 +45,7 @@ class Document{
 	public function __construct($id, $data, DataLoader $dl){
 		$this->id = $id;
 		$this->datasource = $dl;
-		$this->highlited = '';
+		$this->highlighted = '';
 		//echo $data['owner'];
 		if ($data != null){
 			$this->dataUpload = $data['data_upload'];
@@ -58,7 +58,7 @@ class Document{
 			$this->title = $data['titolo'];
 			$this->filePath = "download/{$data['doc_type']}/";
 			if (isset($data['evidenziato']) && $data['evidenziato'] != "" && $data['evidenziato'] != null){
-				$this->highlited = substr($data['evidenziato'], 0, 10)." 23:59:59";
+				$this->highlighted = substr($data['evidenziato'], 0, 10)." 23:59:59";
 			}
 			if (isset($data['tags']) && $data['tags'] != ""){
 				$tags = explode(",", $data['tags']);
@@ -162,11 +162,11 @@ class Document{
 	}
 	
 	public function getHighlighted(){
-		return $this->highlited;
+		return $this->highlighted;
 	}
 	
 	public function setHighlighted($h){
-		$this->highlited = $h;
+		$this->highlighted = $h;
 	}
 	
 	public function getPermission(){
@@ -259,12 +259,12 @@ class Document{
 	}
 	
 	public function save(){
-		$this->id = $this->datasource->executeUpdate("INSERT INTO rb_documents (data_upload, file, doc_type, titolo, abstract, anno_scolastico, owner, evidenziato) VALUES (NOW(), '{$this->file}', {$this->documentType}, '{$this->title}', '{$this->abstract}', {$this->year}, {$_SESSION['__user__']->getUid()}, ".field_null($this->highlited, true).")");
+		$this->id = $this->datasource->executeUpdate("INSERT INTO rb_documents (data_upload, file, doc_type, titolo, abstract, anno_scolastico, owner, evidenziato) VALUES (NOW(), '{$this->file}', {$this->documentType}, '{$this->title}', '{$this->abstract}', {$this->year}, {$_SESSION['__user__']->getUid()}, ".field_null($this->highlighted, true).")");
 		$this->insertTags();
 	}
 	
 	public function update(){
-		$this->datasource->executeUpdate("UPDATE rb_documents SET file = '{$this->file}', titolo = '{$this->title}', abstract = '{$this->abstract}', anno_scolastico = {$this->year}, evidenziato =  ".field_null($this->highlited, true)." WHERE id = {$this->id}");
+		$this->datasource->executeUpdate("UPDATE rb_documents SET file = '{$this->file}', titolo = '{$this->title}', abstract = '{$this->abstract}', anno_scolastico = {$this->year}, evidenziato =  ".field_null($this->highlighted, true)." WHERE id = {$this->id}");
 		$this->insertTags();
 	}
 	
