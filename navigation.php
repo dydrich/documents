@@ -9,6 +9,9 @@ switch ($_SESSION['__mod_area__']) {
 	case "manager":
 		$lb = "segreteria";
 		break;
+	case "genitori":
+		$lb = "genitori";
+		break;
 }
 ?>
 <nav id="navigation">
