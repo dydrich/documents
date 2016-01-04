@@ -48,7 +48,9 @@ while($type = $res_types->fetch_assoc()){
 			if (($k == 10 || $k == 11)  && (!$_SESSION['__user__']->check_perms(DIR_PERM) || $_SESSION['__role__'] != "Dirigente scolastico")):
 				continue;
 			endif;
-			
+			if ($k == 12):
+				continue;
+			endif;
 		?>
 		<li><a href="documents.php?tipo=<?php echo $k ?>"><?php echo $v ?></a></li>
 		<?php

@@ -13,6 +13,7 @@ require_once "lib/RBFile.php";
 require_once "lib/CircularAttachment.php";
 require_once "lib/DocumentBean.php";
 require_once "lib/TeachingDocument.php";
+require_once "lib/MonthlyReport.php";
 
 ini_set("display_errors", DISPLAY_ERRORS);
 
@@ -268,6 +269,17 @@ else if ($_GET['doc'] == "teacherbooks_archive") {
 	$fp = "/download/registri/";
 
 	$document->setFilePath($fp);
+	try{
+		$document->download();
+	} catch (MYSQLException $ex){
+		echo "kosql|".$ex->getQuery()."|".$ex->getMessage();
+		exit;
+	}
+}
+else if ($_GET['doc'] == "monthly_report") {
+	$file = $_GET['f'];
+	$st = $_GET['st'];
+	$document = new \document\MonthlyReport($file, $st, null);
 	try{
 		$document->download();
 	} catch (MYSQLException $ex){

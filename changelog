@@ -1,3 +1,21 @@
+3.5.15
+apertura area genitori (issue #8)
+
+3.5.14
+refactor Document
+
+3.5.13
+personalizzazione metodo downloadFile in TeachingDocument, per usare il titolo come nome
+
+3.5.12
+cancellazione documenti da schermata elenco (issue #7)
+
+3.5.11
+bug fix
+
+3.5.10
+bug fix
+
 3.5.9
 eliminati alcuni tipi di documento dai widget
 
