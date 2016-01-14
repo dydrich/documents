@@ -60,6 +60,18 @@ $drawer_label = "Gestione documento";
 $sel_anni = "SELECT id_anno, descrizione FROM rb_anni WHERE id_anno <= ".$_SESSION['__current_year__']->get_ID()." ORDER BY id_anno DESC";
 $res_anni = $db->executeQuery($sel_anni);
 
+/*
+ * limitazioni tipo file
+ */
+$res_ext = $db->executeQuery("SELECT extension FROM rb_document_extensions WHERE doc_type = {$tipo}");
+$ext = null;
+if ($res_ext->num_rows > 0) {
+	$ext = [];
+	while ($r = $res_ext->fetch_assoc()) {
+		$ext[] = strtolower($r['extension']);
+	}
+}
+
 if ($tipo == 4){
 	// materie
 	$sel_materie = "SELECT * FROM rb_materie WHERE id_materia > 2 AND tipologia_scuola = {$_SESSION['__user__']->getSchoolOrder()}";

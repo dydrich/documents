@@ -100,17 +100,17 @@
 			<tr id="r_abstract" >
 				<td class="doc_title mandatory">Abstract</td>
 				<td class="doc_field">
-					<textarea name="abstract" id="abstract" class="full_field"><?php if(isset($current_doc)) print($current_doc['abstract']) ?></textarea>
+					<textarea name="abstract" id="abstract" class="full_field" style="height: 80px"><?php if(isset($current_doc)) print($current_doc['abstract']) ?></textarea>
 				</td>
 			</tr>
 			<tr id="r_file">
-				<td class="doc_title mandatory">File</td>
+				<td class="doc_title mandatory">File (PDF)</td>
 				<td class="doc_field" id="if_container" style="<?php if($_i == 0) echo "display: none;" ?>">
 					<?php if(isset($current_doc)){ ?>
 						<input class="form_input full_field" type="text" name="fname" id="fname" readonly value="<?php print $current_doc['file'] ?>"/>
 						<!--<a href="#" onclick="load_iframe('<?php print $current_doc['file'] ?>')" style="margin-left: 15px">Modifica file</a>-->
 					<?php }  else{ ?>
-						<div id="iframe"><iframe src="upload_manager.php?upl_type=teaching_doc&area=teachers&tipo=10" id="aframe"></iframe></div>
+						<div id="iframe"><iframe src="upload_manager.php?upl_type=teaching_doc&area=teachers&tipo=10<?php if($ext != null) echo '&ext='.implode(",", $ext) ?>" id="aframe"></iframe></div>
 						<a href="#" onclick="del_file()" id="del_upl" style="">Annulla</a>
 					<?php } ?>
 				</td>

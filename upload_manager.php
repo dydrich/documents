@@ -34,7 +34,7 @@ if (isset($_REQUEST['docID']) && $_REQUEST['docID'] != 0) {
 <script type="text/javascript"></script>
 </head>
 <body style="background-color: #FFF">
-<form action="upload_manager.php?action=upload&upl_type=<?php echo $_REQUEST['upl_type'] ?>&tipo=<?php echo $_GET['tipo'] ?>" method="post" enctype="multipart/form-data" id="doc_form">
+<form action="upload_manager.php?action=upload&upl_type=<?php echo $_REQUEST['upl_type'] ?>&tipo=<?php echo $_GET['tipo']; if (isset($_REQUEST['ext'])) echo '&ext='.$_REQUEST['ext'] ?>" method="post" enctype="multipart/form-data" id="doc_form">
 <div style="height: 25px; display: block" id="_div">
 <?php if (($_REQUEST['upl_type'] == "document" || $_REQUEST['upl_type'] == "teaching_doc" || $_REQUEST['upl_type'] == "document_cdc") && isset($_REQUEST['action'])){ ?>
 <fieldset style="padding-left: 2px">
@@ -95,7 +95,24 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 		$data = array("docID" => $docID, "deleteFile" => 1);
 		$upload_manager->setData(($data));
 	}
-	$ret = $upload_manager->upload();
+	/*
+	 * controllo limitazioni tipo file
+	 */
+	$ext = null;
+	if (isset($_REQUEST['ext']) && $_REQUEST['ext'] != '') {
+		if (strpos($_REQUEST['ext'], ',')) {
+			$ext = explode($_REQUEST['ext'], ",");
+		}
+		else {
+			$ext = [$_REQUEST['ext']];
+		}
+	}
+	$ret = $upload_manager->upload($ext);
+	if ($ret == UploadManager::WRONG_FILE_EXT) {
+		echo("<script>parent.loaded_with_error('Tipo di file non consentito. Estensioni consentite: ".strtoupper($_REQUEST['ext'])."'); parent.reload_iframe();</script>");
+		exit;
+	}
+
 	$fs = 00;
 	$dati_file = MimeType::getMimeContentType($file);
 	if ($_GET['upl_type'] == "teaching_doc") {

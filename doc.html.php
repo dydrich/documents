@@ -572,11 +572,11 @@
 
 		var reload_iframe = function(){
 			<?php if ($tipo == 10) { ?>
-			$('#aframe').attr('src', 'upload_manager.php?upl_type=teaching_doc&area=teachers&tipo=<?php echo $tipo ?>');
+			$('#aframe').attr('src', 'upload_manager.php?upl_type=teaching_doc&area=teachers&tipo=<?php echo $tipo; if ($ext != null) echo '&ext='.implode(",", $ext) ?>');
 			<?php } else if ($tipo == 11) { ?>
-			$('#aframe').attr('src', 'upload_manager.php?upl_type=document_cdc&area=teachers&tipo=<?php echo $tipo ?>');
+			$('#aframe').attr('src', 'upload_manager.php?upl_type=document_cdc&area=teachers&tipo=<?php echo $tipo; if ($ext != null) echo '&ext='.implode(",", $ext) ?>');
 			<?php } else { ?>
-			$('#aframe').attr('src', 'upload_manager.php?upl_type=document&area=teachers&tipo=<?php echo $tipo ?>');
+			$('#aframe').attr('src', 'upload_manager.php?upl_type=document&area=teachers&tipo=<?php echo $tipo; if ($ext != null) echo '&ext='.implode(",", $ext) ?>');
 			<?php } ?>
 		};
 

@@ -87,7 +87,7 @@
 						<input class="form_input full_field" type="text" name="fname" id="fname" readonly value="<?php print $current_doc['file'] ?>"/>
 						<!--<a href="#" onclick="load_iframe('<?php print $current_doc['file'] ?>')" style="margin-left: 15px">Modifica file</a> -->
 					<?php }  else{ ?>
-						<div id="iframe"><iframe src="upload_manager.php?upl_type=document_cdc&area=teachers&tipo=11" id="aframe"></iframe></div>
+						<div id="iframe"><iframe src="upload_manager.php?upl_type=document_cdc&area=teachers&tipo=11<?php if($ext != null) echo '&ext='.implode(",", $ext) ?>" id="aframe"></iframe></div>
 						<a href="#" onclick="del_file()" id="del_upl" style="">Annulla</a>
 					<?php } ?>
 				</td>
