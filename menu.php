@@ -23,7 +23,7 @@ while($type = $res_types->fetch_assoc()){
 			if (($k != 4 && $k != 10 && $k != 11) && !$_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|APS_PERM|AIS_PERM|AMS_PERM)):
 				continue;
 			endif;
-			if ($k == 7):
+			if ($k == 7 || $k == 12):
 				continue;
 			endif;
 			if (($k == 4 || $k == 10 || $k == 11)  && (!$_SESSION['__user__']->check_perms(DOC_PERM))):
