@@ -42,7 +42,7 @@ class Document{
 	const UPL_ERROR = 2;
 	const UPL_OK = 3;
 	
-	public function __construct($id, $data, DataLoader $dl){
+	public function __construct($id, $data, MySQLDataLoader $dl){
 		$this->id = $id;
 		$this->datasource = $dl;
 		$this->highlighted = '';
@@ -276,7 +276,7 @@ class Document{
 	}
 	
 	public function download(){
-		if (file_exists("../../".$this->getFilePath().$this->file)){
+		if (file_exists($_SESSION['__config__']['html_root']."/".$this->getFilePath().$this->file)){
 			$this->registerDownload();
 			$this->downloadFile();
 		}

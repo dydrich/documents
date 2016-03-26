@@ -23,7 +23,7 @@ class Report extends Document{
 		$this->area = "intranet";
 		$this->session = $sess;
 		if ($this->session == 1){
-			$this->deleteOnDownload = true;
+			//$this->deleteOnDownload = true;
 			$this->filePath = "tmp/";
 		}
 		$this->setDocumentType(8);
@@ -39,7 +39,7 @@ class Report extends Document{
 	}
 	
 	public function download($data = null){
-		if (file_exists("../../".$this->getFilePath().$this->file)){
+		if (file_exists($_SESSION['__config__']['html_root']."/".$this->getFilePath().$this->file)){
 			if ($this->getRegisterReading()) {
 				$this->registerReportReading($data);
 			}
@@ -49,7 +49,7 @@ class Report extends Document{
 			}
 		}
 		else {
-			$_SESSION['no_file']['file'] =  $this->getFilePath().$this->file;
+			$_SESSION['no_file']['file'] =  $_SESSION['__config__']['html_root']."/".$this->getFilePath().$this->file;
 			header("Location: no_file.php");
 		}
 	}
@@ -58,7 +58,7 @@ class Report extends Document{
 		$parent = $data['parent'];
 		$al = $data['student'];
 		$idp = $data['idp'];
-		$insert_read = $this->datasource->execute("INSERT INTO rb_lettura_pagelle (id_pubblicazione, alunno, data_lettura, genitore) VALUES ({$idp}, {$al}, NOW(), {$parent})");
+		$this->datasource->execute("INSERT INTO rb_lettura_pagelle (id_pubblicazione, alunno, data_lettura, genitore) VALUES ({$idp}, {$al}, NOW(), {$parent})");
 	}
 	
 }
