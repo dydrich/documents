@@ -89,7 +89,7 @@ class MYPDF extends SchoolPDF {
 			}
 			$this->SetY($this->y_position);
 			$this->SetFont('', 'B', 8);
-			$this->MultiCell(180, 4, utf8_decode($abs), 0, "L");
+			$this->MultiCell(180, 4, $abs, 0, "L");
 			$this->SetFont('', '', 8);
 			$this->y_position += 6.0;
 			$this->SetY($this->y_position);
