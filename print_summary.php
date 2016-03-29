@@ -59,7 +59,7 @@ class MYPDF extends SchoolPDF {
 		$this->SetFont('', 'B', 9);
 		//$this->SetFillColor(232, 234, 236);
 		$this->SetTextColor(0);
-		$this->Cell(180, 4, $_SESSION['__current_year__']->to_string()."  - Riepilogo albo pretorio del mese di {$mesi[intval($month)]} {$year}", 0, 0, "C");
+		$this->Cell(180, 4, "Riepilogo albo pretorio del mese di {$mesi[intval($month)]} {$year}", 0, 0, "C");
 		$this->setCellPaddings(0, 0, 0, 3);
 		$this->SetLineStyle(array('width' => .1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(128, 128, 128)));
 		$this->SetTextColor(0);
@@ -75,7 +75,8 @@ class MYPDF extends SchoolPDF {
 		
 		while($doc = $res_docs->fetch_assoc()){
 			$abs = $atto = $prot = "";
-			$abs = ($doc['abstract'] != "") ? $doc['titolo']." - ".$doc['abstract'] : $doc['titolo'];
+			$abs = ($doc['abstract'] != "" && $doc['abstract'] != $doc['titolo']) ? $doc['titolo']." - ".$doc['abstract'] :
+				$doc['titolo'];
 			$abs = $doc['progressivo_atto']."  -  ".$abs;
 			$atto =  ($doc['numero_atto'] != "") ? $doc['numero_atto'] : "non indicato";
 			$prot =  ($doc['protocollo'] != "") ? $doc['protocollo'] : "non indicato";
@@ -137,11 +138,6 @@ $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 //set image scale factor
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-//set some language-dependent strings
-$pdf->setLanguageArray($l);
-
-// ---------------------------------------------------------
-
 // set font
 $pdf->SetFont('helvetica', '', 10);
 
@@ -156,5 +152,3 @@ $pdf->pageBody($month, $year, $res_docs);
 
 //Close and output PDF document
 $pdf->Output('riepilogo_albo.pdf', 'D');
-
-?>
