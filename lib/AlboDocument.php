@@ -103,18 +103,34 @@ class AlboDocument extends Document{
 	
 	public function save(){
 		$this->askForProgressive();
-		$this->id = $this->datasource->executeUpdate("INSERT INTO rb_documents (progressivo_anno, progressivo_atto, data_upload, file, doc_type, titolo, abstract, anno_scolastico, owner, scadenza, categoria, evidenziato, protocollo, numero_atto) VALUES ({$this->progressive}, '{$this->progressiveString}', NOW(), '{$this->file}', {$this->documentType}, '{$this->title}', '{$this->abstract}', {$this->year}, {$_SESSION['__user__']->getUid()}, '{$this->dueDate}', {$this->category}, ".field_null($this->highlited, true).", ".field_null($this->protocol, true).", ".field_null($this->actNumber, false).")");
+		$this->id = $this->datasource->executeUpdate("INSERT INTO rb_documents (progressivo_anno, progressivo_atto, 
+		data_upload, file, doc_type, titolo, abstract, anno_scolastico, owner, scadenza, categoria, evidenziato, 
+		protocollo, numero_atto) VALUES ({$this->progressive}, '{$this->progressiveString}', NOW(), '{$this->file}', 
+		{$this->documentType}, '{$this->title}', '{$this->abstract}', {$this->year}, {$_SESSION['__user__']->getUid()}, '{$this->dueDate}', {$this->category}, ".field_null($this->highlighted, true).", ".field_null($this->protocol, true).", ".field_null($this->actNumber, false).")");
 		$this->updateProgressive();
 	}
 	
 	public function update(){
-		$this->datasource->executeUpdate("UPDATE rb_documents SET file = '{$this->file}', titolo = '{$this->title}', abstract = '{$this->abstract}', anno_scolastico = {$this->year}, categoria = {$this->category}, scadenza = '{$this->dueDate}', evidenziato =  ".field_null($this->highlited, true).", protocollo = ".field_null($this->protocol, true).", numero_atto = ".field_null($this->actNumber, false)." WHERE id = {$this->id}");
+		$this->datasource->executeUpdate("UPDATE rb_documents SET file = '{$this->file}', titolo = '{$this->title}', 
+		abstract = '{$this->abstract}', anno_scolastico = {$this->year}, categoria = {$this->category}, scadenza = '{$this->dueDate}', evidenziato =  ".field_null($this->highlighted, true).", protocollo = ".field_null($this->protocol, true).", numero_atto = ".field_null($this->actNumber, false)." WHERE id = {$this->id}");
 	}
 	
 	public function delete(){
 		$this->deleteFile();
 		$this->datasource->executeUpdate("DELETE FROM rb_downloads WHERE doc_id = {$this->id}");
 		$this->datasource->executeUpdate("DELETE FROM rb_documents WHERE id = {$this->id}");
+		/*
+		 * controllo del valore del progressivo, che va impostato a max+1 (max = valore massimo usato nell'anno)
+		 */
+		$max = $this->datasource->executeCount("SELECT MAX(progressivo_anno) FROM rb_documents WHERE doc_type = 7 AND YEAR(data_upload) = ".date("Y"));
+		if ($max != null && $max != false && $max != "") {
+			$max++;
+		}
+		else {
+			$max = 1;
+		}
+		$this->datasource->executeUpdate("UPDATE rb_progressivi_albo SET progressivo_atto = {$max} WHERE anno = ".date("Y"));
+
 		$data = array();
 		$data['docId'] = $this->getID();
 		$data['year'] = date("Y");
