@@ -43,7 +43,9 @@ foreach ($materie as $k => $document){
 	foreach ($document['docs'] as $d){
 ?>
 	<p class="doc">
-		<a class="doc" href="download_manager.php?doc=document&&id=<?php print $d['id'] ?>"><?php print utf8_decode($d['titolo']) ?></a>
+		<a class="doc" href="download_manager.php?doc=document&&id=<?php print $d['id'] ?>">
+            <?php print $d['titolo'] ?>
+        </a>
 		<span class="didascalia">(di <?php echo $d['prof'] ?>, a. s. <?php echo $d['descrizione'] ?>)</span>
 	</p>
 <?php

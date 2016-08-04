@@ -103,7 +103,7 @@ class MYPDF extends SchoolPDF {
 			$this->Cell(20, 5, "Pubblicato il ".format_date(substr($doc['data_upload'], 0, 10), SQL_DATE_STYLE, IT_DATE_STYLE, "/")." alle ore ".substr($doc['data_upload'], 11, 5)." da {$doc['owner']}", 0, 0);
 			$this->y_position += 4.0;
 			$this->SetY($this->y_position);
-			$this->Cell(20, 5, "Categoria: ".utf8_decode($doc['nome']), 0, 0);
+			$this->Cell(20, 5, "Categoria: ".$doc['nome'], 0, 0);
 		}
 	}
 }

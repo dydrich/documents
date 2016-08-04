@@ -104,13 +104,13 @@ $drawer_label = "Gestione categoria di documento";
 		<tr>
 			<td class="doc_title">Nome</td>
 			<td class="doc_field">
-				<input type="text" name="nome" id="nome" value="<?php if(isset($cat)) echo utf8_decode($cat['nome']) ?>" class="full_field" />
+				<input type="text" name="nome" id="nome" value="<?php if(isset($cat)) echo $cat['nome'] ?>" class="full_field" />
 			</td>
 		</tr>
 		<tr>
 			<td class="doc_title">Descrizione</td>
 			<td class="doc_field">
-				<textarea id="abstract" name="abstract" class="full_field"><?php if(isset($cat) && trim($cat['descrizione']) != "") echo trim(utf8_decode($cat['descrizione'])) ?></textarea>
+				<textarea id="abstract" name="abstract" class="full_field"><?php if(isset($cat) && trim($cat['descrizione']) != "") echo trim($cat['descrizione']) ?></textarea>
 			</td>
 		</tr>
 	</table>

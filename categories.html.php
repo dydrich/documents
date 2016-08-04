@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<title><?php print $_SESSION['__config__']['intestazione_scuola'] ?>::categorie albo</title>
 	<link rel="stylesheet" href="../../font-awesome/css/font-awesome.min.css">
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,400italic,600,600italic,700,700italic,900,200' rel='stylesheet' type='text/css'>
@@ -84,7 +84,7 @@
 	        <a href="category.php?id=<?php echo $cat['id_categoria']?>&action=3">
 		        <div class="card" id="cat<?php echo $cat['id_categoria'] ?>">
 			        <div class="card_title accent_color">
-				        <?php echo utf8_decode($cat['nome']) ?>
+				        <?php echo $cat['nome'] ?>
 				        <div style="float: right; margin-right: 20px">
 					        <a href="../../shared/no_js.php" class="del_x" data-cat="<?php echo $cat['id_categoria'] ?>">
 						        <img src="../../images/51.png" style="position: relative; bottom: 2px" />
@@ -92,7 +92,7 @@
 				        </div>
 			        </div>
 			        <div class="card_minicontent">
-				        <?php print utf8_decode($cat['descrizione']) ?>
+				        <?php print $cat['descrizione'] ?>
 			        </div>
 		        </div>
 		    </a>

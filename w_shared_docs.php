@@ -42,7 +42,9 @@ if($res_ev->num_rows > 0){
 			}
 			$ab .= " ({$dc['materia']}, di {$dc['cognome']} {$dc['nome']})";
 ?>
-		<a href="download_manager.php?doc=document&id=<?php print $dc['id'] ?>" class="attention"><?php print utf8_decode($ab) ?></a><br />
+		<a href="download_manager.php?doc=document&id=<?php print $dc['id'] ?>" class="attention">
+            <?php print $ab ?>
+        </a><br />
 <?php
 		}
 ?>
