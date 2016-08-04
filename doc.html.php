@@ -154,6 +154,14 @@
 				create_fields(11);
 			});
 			<?php endif; ?>
+            <?php if($tipo == 7) : ?>
+            if ($('#published')){
+                $('#published').datepicker({
+                    dateFormat: "dd/mm/yy",
+                    minDate: new Date()
+                });
+            }
+            <?php endif; ?>
 		});
 
 		var create_fields = function(_type) {

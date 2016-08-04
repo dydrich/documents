@@ -1,3 +1,24 @@
+3.6.22
+gestione pubblicazioni posticipate in AlboDocument
+
+3.6
+utf8
+
+3.5.21
+recupero progressivi non utilizzati in AlboDocument
+
+3.5.20
+modifiche per download di file in android, che non supporta il deleteOnDownload
+
+3.5.19
+bug fix in print_summary.php
+
+3.5.18
+bug fix in menu.php
+
+3.5.17
+controllo estensione file in upload
+
 3.5.16
 tipo documento scheda di segnalazione insufficienze (MonthlyReport) (issue #10)
 

@@ -108,7 +108,13 @@ switch ($_POST['doc_type']){
 			$doc = new DidacticDocument($_POST['_i'], $data, new MYSQLDataLoader($db));
 		}
 		else if ($_POST['tipo'] == 7){
-			$data = array("anno_scolastico" => $_POST['anno'], "owner" => $_SESSION['__user__']->getUid(), "titolo" => $db->real_escape_string($_POST['titolo']), "doc_type" => $_POST['tipo'], "abstract" => $db->real_escape_string($_POST['abstract']), "file" => $_POST['server_file'], "data_upload" => date("Y-m-d H:i:s"), "categoria" => $_POST['categoria'], "scadenza" => $_POST['scadenza'], "numero_atto" => $_POST['act'], "progressivo_atto" => $_POST['progressivo_atto'],  "protocollo" => $db->real_escape_string($_POST['protocol']), "evidenziato" => format_date($_POST['highlighted'], IT_DATE_STYLE, SQL_DATE_STYLE, "-"));
+			$data = array(
+				"anno_scolastico" => $_POST['anno'], "owner" => $_SESSION['__user__']->getUid(), "titolo" => $db->real_escape_string($_POST['titolo']),
+				"doc_type" => $_POST['tipo'], "abstract" => $db->real_escape_string($_POST['abstract']), "file" => $_POST['server_file'],
+			    "data_upload" => date("Y-m-d H:i:s"), "categoria" => $_POST['categoria'], "scadenza" => $_POST['scadenza'], "numero_atto" => $_POST['act'],
+				"progressivo_atto" => $_POST['progressivo_atto'],  "protocollo" => $db->real_escape_string($_POST['protocol']),
+			    "evidenziato" => format_date($_POST['highlighted'], IT_DATE_STYLE, SQL_DATE_STYLE, "-"), "data_pubblicazione" => format_date
+				($_POST['published'], IT_DATE_STYLE, SQL_DATE_STYLE, "-"));
 			$doc = new AlboDocument($_POST['_i'], $data, new MYSQLDataLoader($db));
 		}
 		else if ($_POST['tipo'] == 10){

@@ -10,6 +10,7 @@ class AlboDocument extends Document{
 	private $progressiveString;
 	private $dueDate;
 	private $category;
+	private $publishDate;
 	
 	public function __construct($id, $data, DataLoader $dl){
 		parent::__construct($id, $data, $dl);
@@ -20,6 +21,7 @@ class AlboDocument extends Document{
 			$this->protocol = $data['protocollo'];
 			$this->dueDate = format_date($data['scadenza'], IT_DATE_STYLE, SQL_DATE_STYLE, "-");
 			$this->category = $data['categoria'];
+			$this->publishDate = format_date($data['data_pubblicazione'], IT_DATE_STYLE, SQL_DATE_STYLE, "-");
 		}	
 		$this->deleteOnDownload = false;
 		$this->area = "public";
@@ -103,16 +105,19 @@ class AlboDocument extends Document{
 	
 	public function save(){
 		$this->askForProgressive();
-		$this->id = $this->datasource->executeUpdate("INSERT INTO rb_documents (progressivo_anno, progressivo_atto, 
-		data_upload, file, doc_type, titolo, abstract, anno_scolastico, owner, scadenza, categoria, evidenziato, 
-		protocollo, numero_atto) VALUES ({$this->progressive}, '{$this->progressiveString}', NOW(), '{$this->file}', 
-		{$this->documentType}, '{$this->title}', '{$this->abstract}', {$this->year}, {$_SESSION['__user__']->getUid()}, '{$this->dueDate}', {$this->category}, ".field_null($this->highlighted, true).", ".field_null($this->protocol, true).", ".field_null($this->actNumber, false).")");
+		$this->id = $this->datasource->executeUpdate("INSERT INTO rb_documents (progressivo_anno, progressivo_atto, data_upload, file, doc_type, titolo, 
+		abstract, anno_scolastico, owner, scadenza, categoria, evidenziato, protocollo, numero_atto, data_pubblicazione) VALUES ({$this->progressive}, 
+		'{$this->progressiveString}', NOW(), '{$this->file}', {$this->documentType}, '{$this->title}', '{$this->abstract}', {$this->year}, 
+		{$_SESSION['__user__']->getUid()}, '{$this->dueDate}', {$this->category}, ".field_null($this->highlighted, true).", ".field_null($this->protocol, true).", 
+		".field_null($this->actNumber, false).", '{$this->publishDate}')");
 		$this->updateProgressive();
 	}
 	
 	public function update(){
-		$this->datasource->executeUpdate("UPDATE rb_documents SET file = '{$this->file}', titolo = '{$this->title}', 
-		abstract = '{$this->abstract}', anno_scolastico = {$this->year}, categoria = {$this->category}, scadenza = '{$this->dueDate}', evidenziato =  ".field_null($this->highlighted, true).", protocollo = ".field_null($this->protocol, true).", numero_atto = ".field_null($this->actNumber, false)." WHERE id = {$this->id}");
+		$this->datasource->executeUpdate("UPDATE rb_documents SET file = '{$this->file}', titolo = '{$this->title}', abstract = '{$this->abstract}', 
+			anno_scolastico = {$this->year}, categoria = {$this->category}, scadenza = '{$this->dueDate}', evidenziato =  ".field_null($this->highlighted, true).", 
+			protocollo = ".field_null($this->protocol, true).", numero_atto = ".field_null($this->actNumber, false).", data_pubblicazione = '{$this->publishDate}' 
+			WHERE id = {$this->id}");
 	}
 	
 	public function delete(){
@@ -139,5 +144,20 @@ class AlboDocument extends Document{
 		$log = $elf->getEventLog();
 		$log->logDeletedDocument();
 	}
+	
+	/**
+	 * @return string
+	 */
+	public function getPublishDate() {
+		return $this->publishDate;
+	}
+	
+	/**
+	 * @param string $publishDate
+	 */
+	public function setPublishDate($publishDate) {
+		$this->publishDate = $publishDate;
+	}
+	
 	
 }

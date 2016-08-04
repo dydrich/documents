@@ -22,11 +22,19 @@
 	            <?php
 	            while($cat = $res_categorie->fetch_assoc()){
 	            ?>
-	            		<option <?php if($cat['id_categoria'] == $document->getCategory()) print("selected='selected'") ?> value="<?php print $cat['id_categoria'] ?>"><?php print utf8_decode($cat['nome']) ?></option>
+	            		<option <?php if($cat['id_categoria'] == $document->getCategory()) print("selected='selected'") ?> value="<?php print $cat['id_categoria'] ?>"><?php print $cat['nome'] ?></option>
 	            <?php } ?>
 	                </select>
 	            </td>
 	        </tr>
+            <tr>
+                <td class="doc_title">Online dal</td>
+                <td class="doc_field">
+                    <input type="text" name="published" id="published" class="full_field" readonly="readonly" value="<?php if(isset($current_doc)) echo
+                            format_date($document->getPublishDate(), SQL_DATE_STYLE, IT_DATE_STYLE, "/"); else echo date("d/m/Y") ?>"  />
+
+                </td>
+            </tr>
 	        <tr>
 	            <td class="doc_title">In evidenza sino al <?php echo $document->getHighlighted() ?></td>
 	            <td class="doc_field">
