@@ -8,6 +8,7 @@ require_once "lib/Document.php";
 require_once "lib/AlboDocument.php";
 require_once "lib/TeachingDocument.php";
 require_once "lib/ClassCommitteeDocument.php";
+require_once "lib/SchoolDocument.php";
 require_once "../../lib/ArrayMultiSort.php";
 require_once "../../lib/RBUtilities.php";
 
@@ -134,6 +135,15 @@ else if ($tipo == 11) {
 	if ($_i != 0) {
 		$document = new \eschool\ClassCommitteeDocument($_i, $current_doc, null, new MYSQLDataLoader($db), null);
 	}
+}
+else if ($tipo == 2) {
+    // categorie
+    $sel_categorie = "SELECT * FROM rb_categorie_docs WHERE tipo_documento = 2";
+    $res_categorie = $db->executeQuery($sel_categorie);
+
+    if ($_i != 0) {
+        $document = new \eschool\SchoolDocument($_REQUEST['_i'], $current_doc, new MySQLDataLoader($db));
+    }
 }
 else {
 	$document = new Document($_REQUEST['_i'], $current_doc, new MySQLDataLoader($db));

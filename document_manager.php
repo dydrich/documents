@@ -14,6 +14,7 @@ require_once "lib/RecordGradesAttach.php";
 require_once "lib/RBFile.php";
 require_once "lib/TeachingDocument.php";
 require_once "lib/ClassCommitteeDocument.php";
+require_once "lib/SchoolDocument.php";
 
 $sel_module = "SELECT * FROM rb_modules WHERE code_name = 'docs'";
 $res_module = $db->execute($sel_module);
@@ -117,6 +118,14 @@ switch ($_POST['doc_type']){
 				($_POST['published'], IT_DATE_STYLE, SQL_DATE_STYLE, "-"));
 			$doc = new AlboDocument($_POST['_i'], $data, new MYSQLDataLoader($db));
 		}
+        else if ($_POST['tipo'] == 2){
+            $data = array(
+                "anno_scolastico" => $_POST['anno'], "owner" => $_SESSION['__user__']->getUid(), "titolo" => $db->real_escape_string($_POST['titolo']),
+                "doc_type" => $_POST['tipo'], "abstract" => $db->real_escape_string($_POST['abstract']), "file" => $_POST['server_file'],
+                "data_upload" => date("Y-m-d H:i:s"), "categoria" => $_POST['categoria'],
+                "evidenziato" => format_date($_POST['highlighted'], IT_DATE_STYLE, SQL_DATE_STYLE, "-"));
+            $doc = new \eschool\SchoolDocument($_POST['_i'], $data, new MYSQLDataLoader($db));
+        }
 		else if ($_POST['tipo'] == 10){
 			$data = array("anno_scolastico" => $_POST['anno'], "owner" => $_SESSION['__user__']->getUid(), "titolo" => $db->real_escape_string($_POST['titolo']), "doc_type" => $_POST['tipo'], "abstract" => $db->real_escape_string($_POST['abstract']), "file" => $_POST['server_file'], "data_upload" => date("Y-m-d H:i:s"), "categoria" => $_POST['tipo_documento']);
 			$alunno = null;

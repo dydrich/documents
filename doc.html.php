@@ -640,7 +640,7 @@
 		</a>
 	</div>
 <?php 
-if ($tipo == 4 || $tipo == 7 || $tipo == 10 || $tipo == 11){
+if ($tipo == 4 || $tipo == 7 || $tipo == 10 || $tipo == 11 || $tipo == 2){
 	include "content{$tipo}.php";
 }
 else {
