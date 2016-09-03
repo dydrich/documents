@@ -12,7 +12,7 @@ class AlboDocument extends Document{
 	private $category;
 	private $publishDate;
 	
-	public function __construct($id, $data, DataLoader $dl){
+	public function __construct($id, $data, MySQLDataLoader $dl){
 		parent::__construct($id, $data, $dl);
 		if ($data != null){
 			$this->filePath = "download/{$data['doc_type']}/";
