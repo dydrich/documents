@@ -1,3 +1,14 @@
+3.7
+nuova gestione tipologia di documento 2 e categorie proprie
+gestione tipologia documento Formazione
+widget formazione
+
+3.6.24
+aggiunto documents.php tra le opzioni di caricamento rapido in load_module.php
+
+3.6.23
+bug fix (AlboDocument)
+
 3.6.22
 gestione pubblicazioni posticipate in AlboDocument
 

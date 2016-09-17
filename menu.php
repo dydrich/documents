@@ -36,7 +36,7 @@ while($type = $res_types->fetch_assoc()){
 		?>
 	</ul>
 <?php endif; ?>
-<?php if ($_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|APS_PERM|AIS_PERM|AMS_PERM|DOC_PERM|STD_PERM|GEN_PERM)): ?>
+<?php if ($_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|APS_PERM|AIS_PERM|AMS_PERM|DOC_PERM|STD_PERM|GEN_PERM|ATA_PERM)): ?>
 	<p class="menu_label act_icon">Vedi</p>
 	<ul class="menublock" style="" dir="rtl">
 		<?php 

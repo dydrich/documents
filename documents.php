@@ -3,7 +3,7 @@
 require_once "../../lib/start.php";
 
 check_session();
-check_permission(DIR_PERM|DSG_PERM|SEG_PERM|DOC_PERM|STD_PERM|GEN_PERM);
+check_permission(DIR_PERM|DSG_PERM|SEG_PERM|DOC_PERM|STD_PERM|GEN_PERM|ATA_PERM);
 
 if(!$_SESSION['__user__']->isInGroup(DS_GROUP)){
 	$gid = $_SESSION['__user__']->getPerms();

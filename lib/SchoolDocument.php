@@ -30,7 +30,7 @@ class SchoolDocument extends \Document
     }
 
     public function save(){
-        $this->id = $this->datasource->executeUpdate("INSERT INTO rb_documents (data_upload, file, doc_type, titolo, abstract, anno_scolastico, owner, evidenziato, categoria) VALUES (NOW(), '{$this->file}', {$this->documentType}, '{$this->title}', '{$this->abstract}', {$this->year}, {$_SESSION['__user__']->getUid()}, ".field_null($this->highlighted, true)."), {$this->category}");
+        $this->id = $this->datasource->executeUpdate("INSERT INTO rb_documents (data_upload, file, doc_type, titolo, abstract, anno_scolastico, owner, evidenziato, categoria) VALUES (NOW(), '{$this->file}', {$this->documentType}, '{$this->title}', '{$this->abstract}', {$this->year}, {$_SESSION['__user__']->getUid()}, ".field_null($this->highlighted, true).", {$this->category})");
         $this->insertTags();
     }
 

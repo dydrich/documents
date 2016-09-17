@@ -24,7 +24,10 @@ else {
 	setInterval(function(){ ticker () }, 3000);
 </script>
 <div class="welcome">
-	<p id="w_head" style="margin-bottom: 0">Documenti in evidenza</p>
+	<p id="w_head" style="margin-bottom: 0; background-image: none">
+		<i class="fa fa-file-text" style="position: relative; left: -30px; font-size: 1.4em"></i>
+		<span style="position: relative; left: -20px">Documenti in evidenza</span>
+	</p>
 	<div id="ticker_container" style="height: <?php echo $ticker_height ?>px">
 		<ul id="ticker" class="ticker">
     <?php
