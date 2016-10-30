@@ -42,7 +42,7 @@ while($type = $res_types->fetch_assoc()){
 		<?php 
 		reset($types);
 		while(list($k, $v) = each($types)){
-			if ($k != 4 && ($_SESSION['__user__']->check_perms(STD_PERM) || $_SESSION['__user__']->check_perms(GEN_PERM))):
+			if ($k != 4 && ($_SESSION['__user__']->check_perms(STD_PERM) || ($_SESSION['__user__']->check_perms(GEN_PERM) && !$_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|DOC_PERM|ATA_PERM)))):
 				continue;
 			endif;
 			if (($k == 10 || $k == 11)  && (!$_SESSION['__user__']->check_perms(DIR_PERM) || $_SESSION['__role__'] != "Dirigente scolastico")):
