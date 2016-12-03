@@ -35,6 +35,9 @@ if (isset($_REQUEST['page'])){
 	else if ($_REQUEST['page'] == "doc"){
 		header("Location: {$_REQUEST['page']}.php?_i={$_REQUEST['value']}");
 	}
+	else if ($_REQUEST['page'] == "ata"){
+		header("Location: documents.php?tipo=2&cat=23");
+	}
 	else {
 		header("Location: {$_REQUEST['page']}.php");
 	}

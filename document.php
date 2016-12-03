@@ -10,7 +10,7 @@ require_once "lib/TeachingDocument.php";
 ini_set("display_errors", "1");
 
 check_session();
-check_permission(DIR_PERM|DSG_PERM|SEG_PERM|DOC_PERM|STD_PERM|GEN_PERM);
+check_permission(DIR_PERM|DSG_PERM|SEG_PERM|DOC_PERM|STD_PERM|GEN_PERM|ATA_PERM);
 
 $_SESSION['__path_to_root__'] = "../../";
 

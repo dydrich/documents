@@ -639,7 +639,7 @@
 			<img src="../../images/47bis.png" style="padding: 12px 0 0 12px" />
 		</a>
 	</div>
-<?php 
+<?php
 if ($tipo == 4 || $tipo == 7 || $tipo == 10 || $tipo == 11 || $tipo == 2){
 	include "content{$tipo}.php";
 }
