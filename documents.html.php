@@ -53,13 +53,13 @@
 <div id="left_col">
     <?php if ($_REQUEST['tipo'] == 2): ?>
         <div class="mdtabs" style="top: -20px">
-            <div class="mdtab<?php if ($cat == 0) echo " mdselected_tab" ?>">
+            <div class="mdtab<?php if ($cat == 0) echo " mdselected_tab" ?>" style="width: 90px;">
                 <a href="documents.php?tipo=2"><span>Tutti</span></a>
             </div>
             <?php
             foreach ($categorie as $k => $categ) {
                 ?>
-                <div class="mdtab<?php if (isset($cat) && $cat == $k) echo " mdselected_tab" ?>">
+                <div class="mdtab<?php if (isset($cat) && $cat == $k) echo " mdselected_tab" ?>" style="width: 90px;">
                     <a href="documents.php?tipo=2&cat=<?php echo $k ?>"><span><?php echo $categ ?></span></a>
                 </div>
                 <?php
