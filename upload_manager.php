@@ -140,7 +140,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 				print("<script>parent.loaded_with_error('Errore nella copia del file. Riprovare tra poco');$('#_span').html('Errore'); </script>");
 				break;
 			case UploadManager::UPL_OK:
-				print("<script>parent.loading_done('".$file."'); $('#_span').html('$html'); </script>");
+				print("<script>parent.loading_done('".$file."'); $('#_span').html(\"$html\"); </script>");
 				break;
 		}
 	}
