@@ -60,6 +60,9 @@ while($type = $res_types->fetch_assoc()){
 		<li><a href="recommended_docs.php">Documenti consigliati</a>
 		<li><a href="shared_docs.php">Documenti condivisi</a>
 		<?php endif; ?>
+			<?php if ($_SESSION['__user__']->check_perms(GEN_PERM)): ?>
+        <li><a href="<?php echo $_SESSION['__path_to_root__'] ?>intranet/genitori/programmazioni.php">Relazioni</a>
+			<?php endif; ?>
 	</ul>
 <?php endif; ?>
 <?php if ($_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|APS_PERM|AIS_PERM|AMS_PERM)){ ?>
