@@ -24,7 +24,7 @@ class DocumentBean extends Document{
 	}
 
 	public function download(){
-		if (file_exists("../../".$this->getFilePath().$this->file)){
+		if (file_exists($_SESSION['__config__']['html_root']."/".$this->getFilePath().$this->file)){
 			parent::downloadFile();
 		}
 		else {

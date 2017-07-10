@@ -83,6 +83,7 @@ else if ($_GET['doc'] == "teacherbook") {
 	else {
 		$user = $_SESSION['__user__'];
 	}
+	$user = $_SESSION['__user__'];
 
 	$file = $_GET['f'];
 	$f = explode("_", $file);
@@ -108,6 +109,7 @@ else if ($_GET['doc'] == "teacherbookall") {
 	else {
 		$user = $_SESSION['__user__'];
 	}
+	$user = $_SESSION['__user__'];
 
 	$file = $_GET['f'];
 	$f = explode("_", $file);
@@ -115,13 +117,13 @@ else if ($_GET['doc'] == "teacherbookall") {
 	if (isset($_GET['support']) && $_GET['support'] == 1){
 		$support = true;
 	}
-	$document = new RecordGradesDocument($file.".pdf", $_SESSION['__current_year__'], $f[3], $user, new MySQLDataLoader($db));
+	$document = new RecordGradesDocument($file.".pdf", $_SESSION['__current_year__'], $f[2], $user, new MySQLDataLoader($db));
 	$document->setHasAttach(true);
 	if (!$support){
-		$id = $db->executeCount("SELECT id FROM rb_registri_personali WHERE anno = {$_SESSION['__current_year__']->get_ID()} AND docente = {$_SESSION['__user__']->getUid(true)} AND classe = {$f[3]} AND materia = {$f[4]}");
+		$id = $db->executeCount("SELECT id FROM rb_registri_personali WHERE anno = {$_SESSION['__current_year__']->get_ID()} AND docente = {$_SESSION['__user__']->getUid(false)} AND classe = {$f[2]} AND materia = {$f[3]}");
 	}
 	else {
-		$id = $db->executeCount("SELECT id FROM rb_registri_personali WHERE anno = {$_SESSION['__current_year__']->get_ID()} AND docente = {$_SESSION['__user__']->getUid(true)} AND classe = {$f[3]} AND alunno = {$f[4]}");
+		$id = $db->executeCount("SELECT id FROM rb_registri_personali WHERE anno = {$_SESSION['__current_year__']->get_ID()} AND docente = {$_SESSION['__user__']->getUid(false)} AND classe = {$f[3]} AND alunno = {$f[4]}");
 	}
 	$document->setID($id);
 	try{
