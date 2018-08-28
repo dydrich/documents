@@ -45,7 +45,7 @@
 	        <tr id="r_scad">
 	            <td class="doc_title mandatory">Scade il</td>
 	            <td class="doc_field">
-	            	<input type="text" name="scadenza" id="scadenza" class="full_field" readonly="readonly" value="<?php if(isset($current_doc)) print format_date($document->getDueDate(), SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?>"  />
+	            	<input type="text" name="scadenza" id="scadenza" class="full_field" readonly="readonly" value="<?php if(isset($current_doc)) print format_date($document->getDueDate(), SQL_DATE_STYLE, IT_DATE_STYLE, "/"); else echo format_date($default_due_date, SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?>"  />
 
 	            </td>
 	        </tr>	        

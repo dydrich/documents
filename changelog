@@ -1,3 +1,31 @@
+3.9.1
+gestione automatica data di scadenza file albo
+
+3.9
+modifiche per la gestione del registro personale del supplente: modifiche al nome file in modo che sia il registro per materia, venga creato uguale da ogni
+docente della stessa e sia salvato nella directory di ogni docente, permettendo quindi il download
+
+3.8.7
+visualizzazione relazioni pubbliche per genitori
+
+3.8.6
+bug fix per permessi di accesso al documento in w_most_downloaded.php
+
+3.8.5
+bug fix per apostrofo in nome file (upload_manager.php)
+
+3.8.4
+modifiche per area ata
+
+3.8.3
+modifiche grafiche alla lunghezza dei tab in documents.html.php
+
+3.8.2
+bug fix (content2.php)
+
+3.8.1
+bug fix (menu.php)
+
 3.8
 apertura ata
 modifiche grafiche widget (font awesome)

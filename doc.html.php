@@ -27,7 +27,8 @@
 			}
 			if ($('#scadenza')){
 				$('#scadenza').datepicker({
-					dateFormat: "dd/mm/yy"
+					dateFormat: "dd/mm/yy",
+                    setDate: new Date('<?php echo format_date($default_due_date, SQL_DATE_STYLE, IT_DATE_STYLE, "/") ?>')
 				});
 			}
 			<?php if($tipo == 4): ?>

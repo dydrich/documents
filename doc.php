@@ -101,6 +101,9 @@ else if ($tipo == 7){
 	$res_categorie = $db->executeQuery($sel_categorie);
 	
 	$document = new AlboDocument($_REQUEST['_i'], $current_doc, new MySQLDataLoader($db));
+
+	$default_due_date = null;
+	$default_due_date = $db->executeCount('SELECT DATE(DATE_ADD(NOW(), INTERVAL +15 DAY)) AS due_date');
 }
 else if ($tipo == 10) {
 	$sel_tipologie = "SELECT * FROM rb_tipologie_relazione_docente ORDER BY id";
