@@ -11,6 +11,7 @@ require_once "lib/Document.php";
 require_once "lib/DidacticDocument.php";
 require_once "lib/AlboDocument.php";
 require_once "lib/RecordGradesAttach.php";
+require_once "lib/CircularAttachment.php";
 require_once "lib/RBFile.php";
 require_once "lib/TeachingDocument.php";
 require_once "lib/ClassCommitteeDocument.php";
@@ -160,6 +161,12 @@ switch ($_POST['doc_type']){
 		$id_documento = $_POST['id_doc'];
 		$doc = new RecordGradesAttach($file, $_SESSION['__current_year__'], $cls, $_SESSION['__user__'], $sub, new MySQLDataLoader($db), $id_documento);
 		$doc->setID($id);
+		break;
+	case "circular_att":
+		$file = $_POST['f'];
+		$id = $_POST['id'];
+		$data = ['id' => $id, 'file' => $file];
+		$doc = new CircularAttachment($data, new MySQLDataLoader($db));
 		break;
 	case "file":
 		$target = $_POST['targetID'];

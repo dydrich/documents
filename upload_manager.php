@@ -34,7 +34,7 @@ if (isset($_REQUEST['docID']) && $_REQUEST['docID'] != 0) {
 <script type="text/javascript"></script>
 </head>
 <body style="background-color: #FFF">
-<form action="upload_manager.php?action=upload&upl_type=<?php echo $_REQUEST['upl_type'] ?>&tipo=<?php echo $_GET['tipo']; if (isset($_REQUEST['ext'])) echo '&ext='.$_REQUEST['ext'] ?>" method="post" enctype="multipart/form-data" id="doc_form">
+<form action="upload_manager.php?action=upload&upl_type=<?php echo $_REQUEST['upl_type'] ?>&tipo=<?php echo $_GET['tipo']; if (isset($_REQUEST['ext'])) echo '&ext='.$_REQUEST['ext']; if (isset($_REQUEST['idc'])) echo '&idc='.$_REQUEST['idc'] ?>" method="post" enctype="multipart/form-data" id="doc_form">
 <div style="height: 25px; display: block" id="_div">
 <?php if (($_REQUEST['upl_type'] == "document" || $_REQUEST['upl_type'] == "teaching_doc" || $_REQUEST['upl_type'] == "document_cdc") && isset($_REQUEST['action'])){ ?>
 <fieldset style="padding-left: 2px">
@@ -72,6 +72,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 	switch ($_GET['upl_type']){
 		case "document":
 		case "document_cdc":
+		case "circular_att":
 			$type = $_GET['tipo'];
 			$path = "download/{$type}/";
 			break;
@@ -95,6 +96,10 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 		$data = array("docID" => $docID, "deleteFile" => 1);
 		$upload_manager->setData(($data));
 	}
+	if ($_GET['upl_type'] == 'circular_att') {
+		$data = array("idc" => $_GET['idc']);
+		$upload_manager->setData($data);
+    }
 	/*
 	 * controllo limitazioni tipo file
 	 */
@@ -108,6 +113,7 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 		}
 	}
 	$ret = $upload_manager->upload($ext);
+
 	if ($ret == UploadManager::WRONG_FILE_EXT) {
 		echo("<script>parent.loaded_with_error('Tipo di file non consentito. Estensioni consentite: ".strtoupper($_REQUEST['ext'])."'); parent.reload_iframe();</script>");
 		exit;
@@ -144,8 +150,21 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == "upload"){
 				break;
 		}
 	}
+	else if ($_GET['upl_type'] == "circular_att") {
+		switch ($ret[0]){
+			case UploadManager::FILE_EXISTS:
+			    print("<script>parent.loaded_with_error('File presente in archivio'); parent.reload_iframe();</script>");
+				break;
+			case UploadManager::UPL_ERROR:
+				print("<script>parent.loaded_with_error('Errore nella copia del file. Riprovare tra poco');$('#_span').html('Errore'); </script>");
+				break;
+			case UploadManager::UPL_OK:
+			    echo "<script>parent.add_attachment(".$ret[1].", '".$file_name."', '".$dati_file['size']."')</script>";
+				break;
+		}
+    }
 	else{
-		switch ($ret){
+	    switch ($ret){
 			case UploadManager::FILE_EXISTS:
 				print("<script>parent.timeout = 0; window.setTimeout('parent._alert(\"Il file esiste gi&agrave; in archivio. Rinominalo prima di inserirlo\")', 100); window.setTimeout('parent.parent.win.close()', 2000)</script>");
 				break;

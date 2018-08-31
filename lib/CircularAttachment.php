@@ -19,7 +19,7 @@ class CircularAttachment extends Document {
 	}
 	
 	public function delete(){
-		$this->executeUpdate("DELETE FROM rb_com_allegati_circolari WHERE id = {$this->id}");
+		$this->datasource->executeUpdate("DELETE FROM rb_com_allegati_circolari WHERE id = {$this->id}");
 		$this->deleteFile();
 	}
 	
