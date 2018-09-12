@@ -221,7 +221,8 @@ else if ($_GET['doc'] == "file") {
 else if ($_GET['doc'] == "allegato") {
 	$data = array();
 	$data['id'] = $_GET['id'];
-	$data['file'] = $db->executeCount("SELECT file FROM rb_com_allegati_circolari WHERE id = {$_GET['id']}");
+	$f = $db->executeCount("SELECT file FROM rb_com_allegati_circolari WHERE id = {$_GET['id']}");
+	$data['file'] = preg_replace("/ /", "_", $f);
 	$document = new CircularAttachment($data, new MySQLDataLoader($db));
 	try{
 		$document->download();
