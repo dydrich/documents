@@ -2,7 +2,7 @@
 
 require_once "../../lib/start.php";
 
-ini_set("DISPLAY_ERRORS", DISPLAY_ERRORS);
+ini_set("DISPLAY_ERRORS", 1);
 
 check_session();
 check_permission(DIR_PERM|DSG_PERM|SEG_PERM|DOC_PERM);
@@ -23,7 +23,11 @@ else if ($_REQUEST['tipo'] == 10) {
 	$sel_docs = "SELECT rb_documents.*, rb_anni.descrizione, progressivo_atto FROM rb_documents, rb_document_types, rb_anni WHERE doc_type = rb_document_types.id AND rb_document_types.id = ".$_REQUEST['tipo']." AND rb_anni.id_anno = anno_scolastico AND owner = {$_SESSION['__user__']->getUId()} AND anno_scolastico = {$_SESSION['__current_year__']->get_ID()} ORDER BY data_upload DESC ";
 }
 else {
-	$sel_docs = "SELECT rb_documents.*, rb_anni.descrizione, progressivo_atto FROM rb_documents, rb_document_types, rb_anni WHERE doc_type = rb_document_types.id AND rb_document_types.id = ".$_REQUEST['tipo']." AND rb_anni.id_anno = anno_scolastico AND owner = {$_SESSION['__user__']->getUId()} ORDER BY anno_scolastico DESC, data_upload DESC ";
+	$owner_perm = "AND owner = {$_SESSION['__user__']->getUId()}";
+	if ($_SESSION['__user__']->check_perms(DSG_PERM)) {
+		$owner_perm = '';
+	}
+	$sel_docs = "SELECT rb_documents.*, rb_anni.descrizione, progressivo_atto FROM rb_documents, rb_document_types, rb_anni WHERE doc_type = rb_document_types.id AND rb_document_types.id = ".$_REQUEST['tipo']." AND rb_anni.id_anno = anno_scolastico ".$owner_perm." ORDER BY anno_scolastico DESC, data_upload DESC ";
 }
 
 $sel_type = "SELECT commento FROM rb_document_types WHERE id = ".$_REQUEST['tipo'];
