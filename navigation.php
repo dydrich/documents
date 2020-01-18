@@ -12,6 +12,9 @@ switch ($_SESSION['__mod_area__']) {
 	case "genitori":
 		$lb = "genitori";
 		break;
+    default:
+        $l = "";
+        break;
 }
 ?>
 <nav id="navigation">

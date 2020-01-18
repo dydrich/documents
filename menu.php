@@ -18,8 +18,8 @@ while($type = $res_types->fetch_assoc()){
 <?php if ($_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|APS_PERM|AIS_PERM|AMS_PERM|DOC_PERM)): ?>
 	<p class="menu_label class_icon">Gestisci</p>
 	<ul class="menublock" style="" dir="rtl">
-		<?php 
-		while(list($k, $v) = each($types)){
+		<?php
+        foreach ($types as $k => $v) {
 			if (($k != 4 && $k != 10 && $k != 11) && !$_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|APS_PERM|AIS_PERM|AMS_PERM)):
 				continue;
 			endif;
@@ -41,7 +41,7 @@ while($type = $res_types->fetch_assoc()){
 	<ul class="menublock" style="" dir="rtl">
 		<?php 
 		reset($types);
-		while(list($k, $v) = each($types)){
+        foreach ($types as $k => $v){
 			if ($k != 4 && ($_SESSION['__user__']->check_perms(STD_PERM) || ($_SESSION['__user__']->check_perms(GEN_PERM) && !$_SESSION['__user__']->check_perms(DIR_PERM|DSG_PERM|SEG_PERM|DOC_PERM|ATA_PERM)))):
 				continue;
 			endif;

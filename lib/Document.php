@@ -237,7 +237,7 @@ class Document{
 		$id_type = $this->getDocumentType();
 		$id = $this->getID();
 		$ip = $_SERVER['REMOTE_ADDR'];
-		if ($_SESSION['__user__']){
+		if (isset($_SESSION['__user__'])){
 			$user = $_SESSION['__user__']->getUId();
 		}
 		else {

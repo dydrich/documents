@@ -73,6 +73,8 @@ if ($res_ext->num_rows > 0) {
 	}
 }
 
+$default_due_date = null;
+
 if ($tipo == 4){
 	// materie
 	$sel_materie = "SELECT * FROM rb_materie WHERE id_materia > 2 AND tipologia_scuola = {$_SESSION['__user__']->getSchoolOrder()}";
