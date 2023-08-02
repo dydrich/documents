@@ -88,7 +88,7 @@ if ($tipo == 4){
 	$sel_ordini = "SELECT * FROM rb_tipologia_scuola WHERE id_tipo <> 6 AND id_tipo <> 4 AND attivo = 1";
 	$res_ordini = $db->executeQuery($sel_ordini);
 	
-	$document = new DidacticDocument($_REQUEST['_i'], $current_doc, new MySQLDataLoader($db));
+	$document = new DidacticDocument($_i, $current_doc, new MySQLDataLoader($db));
 
 	$shared = array();
 	if (isset($res_share) && $res_share->num_rows > 0){
